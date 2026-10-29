@@ -1,0 +1,66 @@
+name: PHP runtime security
+
+on:
+  pull_request:
+    paths:
+      - 'php_apcu/**'
+      - 'php_opcache/**'
+      - 'zabbix/**'
+      - '.github/workflows/php-runtime-security.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'php_apcu/**'
+      - 'php_opcache/**'
+      - 'zabbix/**'
+      - '.github/workflows/php-runtime-security.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apache:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        integration: [php_apcu, php_opcache]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build patched fixture
+        run: docker build --pull -t php-fixture:test "${{ matrix.integration }}/tests/${{ matrix.integration }}"
+      - name: Verify runtime and HTTP metrics
+        env:
+          INTEGRATION: ${{ matrix.integration }}
+        run: |
+          set -euo pipefail
+          docker run --rm php-fixture:test php -r 'exit(PHP_VERSION_ID === 80336 ? 0 : 1);'
+          docker run -d --name php-fixture -p 127.0.0.1:18000:80 php-fixture:test
+          trap 'docker rm -f php-fixture' EXIT
+          exporter="${INTEGRATION#php_}-dd-handler.php"
+          for attempt in $(seq 1 30); do
+            if curl -fsS "http://127.0.0.1:18000/${exporter}" > /tmp/metrics; then
+              grep -q "^${INTEGRATION}\." /tmp/metrics
+              if grep -Eq 'Warning|Fatal error' /tmp/metrics; then cat /tmp/metrics; exit 1; fi
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs php-fixture
+          exit 1
+
+  zabbix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify frontend PHP runtime
+        run: |
+          image=$(docker compose -f zabbix/tests/compose/docker-compose.yml config --format json | python -c 'import json,sys; print(json.load(sys.stdin)["services"]["zabbix-web"]["image"])')
+          docker run --rm --entrypoint /usr/sbin/php-fpm85 "$image" -v | grep -F 'PHP 8.5.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest 'datadog-checks-base[deps]' datadog-checks-dev -e ./zabbix
+      - name: Test modern and legacy authentication and live API
+        run: pytest -v zabbix/tests/test_zabbix.py zabbix/tests/test_e2e.py

@@ -32,13 +32,18 @@ class ZabbixCheck(AgentCheck):
             {
                 'jsonrpc': '2.0',
                 'method': 'user.login',
-                'params': {'user': zabbix_user, 'password': zabbix_pass},
+                'params': {'username': zabbix_user, 'password': zabbix_pass},
                 'id': 1,
             }
         )
         self.log.debug("Logging in with params user=%s api=%s", zabbix_user, zabbix_api)
 
         response = self.request(zabbix_api, req_data)
+        error = response.get('error', {})
+        if error.get('code') == -32602 and 'unexpected parameter "username"' in error.get('data', ''):
+            legacy_request = json.loads(req_data)
+            legacy_request['params'] = {'user': zabbix_user, 'password': zabbix_pass}
+            response = self.request(zabbix_api, json.dumps(legacy_request))
         token = response.get('result')
         return token
 
