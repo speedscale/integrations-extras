@@ -102,7 +102,6 @@ class FilebeatCheckHttpProfiler:
         return {"increment": self._gather_increment_metrics(response), "gauge": self._gather_gauge_metrics(response)}
 
     def _make_request(self):
-
         response = self._http.get(self._config.stats_endpoint)
         response.raise_for_status()
 
@@ -157,7 +156,6 @@ class FilebeatCheckHttpProfiler:
 
 
 class FilebeatCheckInstanceConfig:
-
     _only_metrics_regexes = None
 
     def __init__(self, instance):
@@ -189,7 +187,6 @@ class FilebeatCheckInstanceConfig:
         return self._ignore_registry
 
     def should_keep_metric(self, metric_name):
-
         if not self._only_metrics:
             return True
 
@@ -213,7 +210,6 @@ class FilebeatCheckInstanceConfig:
 
 
 class FilebeatCheck(AgentCheck):
-
     SERVICE_CHECK_NAME = 'can_connect'
 
     __NAMESPACE__ = "filebeat"
@@ -261,12 +257,22 @@ class FilebeatCheck(AgentCheck):
         try:
             with open(registry_file_path) as registry_file:
                 return json.load(registry_file)
+
+        except ValueError:
+            contents = []
+            with open(registry_file_path) as registry_file:
+                for line in registry_file:
+                    content = json.loads(line)
+                    if 'op' not in content.keys():
+                        contents.append(content['v'])
+            return contents
+
         except IOError as ex:
             self.log.error("Cannot read the registry log file at %s: %s", registry_file_path, ex)
 
             if ex.errno == errno.EACCES:
                 self.log.error(
-                    "You might be interesting in having a look at " "https://github.com/elastic/beats/pull/6455"
+                    "You might be interesting in having a look at https://github.com/elastic/beats/pull/6455"
                 )
 
             return []

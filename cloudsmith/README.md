@@ -2,13 +2,25 @@
 
 ## Overview
 
-This check monitors [Cloudsmith][1] through the Datadog Agent.
-- Monitor storage, bandwidth and token usage in your Cloudsmith account. 
+Cloudsmith is a fully managed cloud-native package management platform, used to securely store, manage, and distribute software artifacts for DevOps teams. It supports all major formats including Docker, npm, Maven, Python, RubyGems, and more, with enterprise-grade access control, policy enforcement, and auditing.
+
+This integration enhances visibility into your Cloudsmith organization by collecting real-time observability data and surfacing it within the Datadog platform. Teams can monitor resource usage, enforce security compliance, and audit user activity-directly from within Datadog dashboards and monitors.
+
+The integration collects data from Cloudsmith's APIs and maps them to the following Datadog telemetry types:
+- **Metrics**: Storage and bandwidth usage, repository-level storage/package/download counters, token activity, and active user metrics.
+- **Events**: Security vulnerability findings, audit log activity, license and vulnerability policy violations, member summaries, and quota usage snapshots.
+- **Service Checks**: Health status of quota consumption and API connectivity.
+
+With this integration, customers gain centralized observability over their Cloudsmith package infrastructure, helping enforce compliance, troubleshoot issues faster, and optimize resource planning.
 
 
 ## Setup
 
 The Cloudsmith check is not included in the [Datadog Agent][2] package, so you need to install it.
+
+Org-wide realtime bandwidth metrics are enabled by default and can be controlled with `enable_realtime_bandwidth`. The analytics interval defaults to `five_minutes` via `bandwidth_interval`.
+
+Repository metrics from the Cloudsmith repositories endpoint are tagged with `repository:<slug>`, so users can filter dynamically in Datadog (for example, selecting one or two repositories from the `repository` dashboard template variable) without calling a separate per-repository endpoint.
 
 ### Installation
 
@@ -17,7 +29,7 @@ For Agent v7.21+ / v6.21+, follow the instructions below to install the Cloudsmi
 1. Run the following command to install the Agent integration:
 
    ```shell
-   datadog-agent integration install -t datadog-cloudsmith==<INTEGRATION_VERSION>
+   datadog-agent integration install -t datadog-cloudsmith==1.4.0
    ```
 
 2. Configure your integration similar to core [integrations][4].
@@ -25,6 +37,28 @@ For Agent v7.21+ / v6.21+, follow the instructions below to install the Cloudsmi
 ### Configuration
 
 1. Edit the `cloudsmith.d/conf.yaml` file, in the `conf.d/` folder at the root of your Agent's configuration directory to start collecting your Cloudsmith performance data. See the [sample cloudsmith.d/conf.yaml][5] for all available configuration options.
+
+    Example snippet with recommended defaults and profile filtering:
+
+    ```yaml
+     - url: https://api.cloudsmith.io/v1
+       cloudsmith_api_key: <API-KEY>
+       organization: <ORG-NAME>
+       enable_realtime_bandwidth: true
+       bandwidth_interval: five_minutes
+       bandwidth_profiles:
+         - name: prod-python
+           aggregate: bytes_downloaded_sum
+           repository:
+             - production
+           package_format:
+             - python
+         - name: by-country
+           aggregate: request_count
+           country:
+             - US
+             - GB
+    ```
 
 2. [Restart the Agent][6].
 
@@ -44,14 +78,24 @@ See [service_checks.json][9] for a list of service checks provided by this integ
 
 ### Events
 
-The Cloudsmith integration does not include any events.
+All Cloudsmith-related events collected appear within the Datadog Event Explorer with the `source:cloudsmith` tag. Events are collected every five minutes to reduce the number of requests sent to the Cloudsmith API.
 
-## Troubleshooting
+There are several types of events available:
 
-Need help? Contact [Datadog support][10].
+- Audit Logs event
+- Security Scan event
+- Vulnerability Policy Violation event
+- License Policy Violation event
+- Organization Members summary
+- Quota (Raw Usage) Summary
+
+
+## Support
+
+Need help? Contact [Cloudsmith support][10].
 
 [1]: https://cloudsmith.com
-[2]: https://app.datadoghq.com/account/settings#agent
+[2]: /account/settings/agent/latest
 [3]: https://docs.datadoghq.com/agent/guide/use-community-integrations/
 [4]: https://docs.datadoghq.com/getting_started/integrations/
 [5]: https://github.com/DataDog/integrations-extras/blob/master/cloudsmith/datadog_checks/cloudsmith/data/conf.yaml.example
@@ -59,5 +103,4 @@ Need help? Contact [Datadog support][10].
 [7]: https://docs.datadoghq.com/agent/guide/agent-commands/#agent-status-and-information
 [8]: https://github.com/DataDog/integrations-extras/blob/master/cloudsmith/metadata.csv
 [9]: https://github.com/DataDog/integrations-extras/blob/master/cloudsmith/assets/service_checks.json
-[10]: https://docs.datadoghq.com/help/
-
+[10]: https://support.cloudsmith.com/hc/en-us

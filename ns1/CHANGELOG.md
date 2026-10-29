@@ -1,22 +1,51 @@
 # CHANGELOG - ns1
 
+## 2.0.1 / 2026-04-06
+
+***Fixed***
+
+* Fixed inner loop in send_metrics to correctly iterate using a dictionary ([#2953](https://github.com/DataDog/integrations-extras/pull/2953))
+
+## 2.0.0 / 2026-04-06
+
+***Changed***:
+
+* Bump minimum `datadog-checks-base` version for integrations missed during Python 3.13 compatibility bump ([#2957](https://github.com/DataDog/integrations-extras/pull/2957))
+
+## 1.0.1 / 2025-08-14
+
+***Added***:
+
+* Reporting for records usage and limit
+
 ## 0.0.6
 
-* [FEATURE] Add API rate limit handler
+***Added***:
+
+* Add API rate limit handler
 
 ## 0.0.5
 
-* [FEATURE] Update overview dashboard layout
-* [ADDED] Added NS1 logo to dashboard
-* [ADDED] New log entry to print metrics
-* [FIXED] Fixed some typos
+***Added***:
+
+* Update overview dashboard layout
+* Added NS1 logo to dashboard
+* New log entry to print metrics
+
+***Fixed***:
+
+* Fixed some typos
 
 ## 0.0.4
 
-* [FEATURE] Changes to configuration file to allow easier handling of zone records without specifying each record for the zone
-* [FEATURE] Changes to allow reporting of more than one network usage statistic
-* [FEATURE] Improved test coverage
+***Added***:
+
+* Changes to configuration file to allow easier handling of zone records without specifying each record for the zone
+* Changes to allow reporting of more than one network usage statistic
+* Improved test coverage
 
 ## 0.0.1
 
-* [FEATURE] First version
+***Added***:
+
+* First version

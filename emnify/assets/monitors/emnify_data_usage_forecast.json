@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "created_at": "2022-09-30",
+  "last_updated_at": "2022-09-30",
+  "title": "Forecasted data usage is more than expected",
+  "tags": [
+    "integration:emnify"
+  ],
+  "description": "Monitoring workload is crucial to estimate not only billing impact but flag potential performance issues. This monitor forcasts if data usage over the next week would exceed a given limit.",
+  "definition": {
+    "message": "It was forecasted that data usage over the next week would exceed what was set as the limit.",
+    "name": "[EMnify] Forecasted data usage has gone above expected",
+    "options": {
+      "include_tags": true,
+      "new_host_delay": 300,
+      "notify_audit": false,
+      "on_missing_data": "show_no_data",
+      "renotify_interval": 0,
+      "require_full_window": false,
+      "silenced": {},
+      "thresholds": {
+        "critical": 1000000000
+      }
+    },
+    "priority": null,
+    "query": "max(next_2w):forecast(sum:emnify.endpoint.volume{*}.as_count().rollup(sum, 86400), 'linear', 2, model='reactive', interval='60m', history='1mo') >= 1000000000",
+    "restricted_roles": null,
+    "tags": [
+      "integration:emnify"
+    ],
+    "type": "query alert"
+  }
+}

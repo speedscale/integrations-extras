@@ -1,7 +1,17 @@
 # CHANGELOG - React
 
-1.0.0
-==================
-### Changes
+## 3.0.0
 
-* [FEATURE] Initial React RUM Integration Tile.
+**_Added_**:
+
+* Add documentation for the TanStack Router integration
+
+## 2.0.0
+
+* Add documentation for the RUM React integration plugin
+
+## 1.0.0
+
+**_Added_**:
+
+* Initial React RUM Integration Tile.

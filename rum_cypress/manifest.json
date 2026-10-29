@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "a6c112b6-f3af-4f9e-bf25-e0f8d8d7bb5f",
   "app_id": "rum-cypress",
+  "owner": "rum-browser",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -12,13 +13,13 @@
     "title": "Cypress",
     "media": [],
     "classifier_tags": [
+      "Category::Issue Tracking",
+      "Category::Metrics",
+      "Category::Network",
+      "Category::Testing",
+      "Category::Tracing",
       "Supported OS::Any",
-      "Category::Monitoring", 
-      "Category::Network", 
-      "Category::Exceptions", 
-      "Category::Metrics", 
-      "Category::Alerting", 
-      "Category::Issue Tracking"
+      "Offering::Integration"
     ]
   },
   "author": {
@@ -27,5 +28,5 @@
     "homepage": "https://www.datadoghq.com",
     "sales_email": "info@datadoghq.com"
   },
-  "oauth": {}
+  "assets": {}
 }

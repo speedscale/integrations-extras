@@ -1,0 +1,21 @@
+{
+  "integration": {
+    "name": "TestMu AI (Formerly LambdaTest)",
+    "client_role": "integration",
+    "onboarding_url": "https://integrations.lambdatest.com/datadog/install",
+    "redirect_uris": [
+      "https://integrations.lambdatest.com/datadog/auth/callback"
+    ],
+    "description": "TestMu AI is a full-stack AI agentic testing cloud that helps developers and testers ship quality software faster.",
+    "scopes": [
+      "incident_settings_write",
+      "user_access_read",
+      "incident_write",
+      "api_keys_write",
+      "dashboards_read",
+      "incident_read",
+      "dashboards_write"
+    ],
+    "id": "e01fc71e-4bbc-11ed-bd85-da7ad0900002"
+  }
+}

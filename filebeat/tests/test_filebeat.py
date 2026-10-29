@@ -91,6 +91,27 @@ def test_registry_happy_path_with_legacy_format(aggregator):
     )
 
 
+# tests that we still support the format from filebeat > 7
+@pytest.mark.unit
+def test_registry_happy_path_with_new_style_format(aggregator):
+    config = _build_instance("new_style_json")
+    check = FilebeatCheck("filebeat", {}, [config])
+    with mocked_os_stat(
+        {
+            "/test_dd_agent/var/log/nginx/access.log": mocked_file_stats(394154, 277025, 51713),
+            "/test_dd_agent/var/log/syslog": mocked_file_stats(1024917, 152172, 51713),
+        }
+    ):
+        check.check(config)
+
+    aggregator.assert_metric(
+        "filebeat.registry.unprocessed_bytes", value=2407, tags=["source:/test_dd_agent/var/log/nginx/access.log"]
+    )
+    aggregator.assert_metric(
+        "filebeat.registry.unprocessed_bytes", value=0, tags=["source:/test_dd_agent/var/log/syslog"]
+    )
+
+
 def test_bad_config():
     check = FilebeatCheck("filebeat", {}, {})
     with pytest.raises(Exception) as excinfo:
@@ -248,7 +269,7 @@ def generate_http_profiler_body(body_update):
 
 def mock_request(body_update=None):
     return mock.patch(
-        "requests.get",
+        "requests.Session.get",
         return_value=mock.MagicMock(status_code=200, json=lambda: generate_http_profiler_body(body_update)),
     )
 
@@ -317,7 +338,7 @@ def test_with_an_invalid_regex_in_the_only_metrics_list():
     check = FilebeatCheck("filebeat", {}, [config])
 
     expected_message = (
-        'Invalid only_metric regex for filebeat: "invalid regex [", ' "error: unexpected end of regular expression"
+        'Invalid only_metric regex for filebeat: "invalid regex [", error: unexpected end of regular expression'
     )
 
     with pytest.raises(Exception) as excinfo:
@@ -385,7 +406,7 @@ def test_when_the_http_call_times_out(aggregator):
 
     request_failure = mock.Mock()
     request_failure.raise_for_status.side_effect = Exception("Error")
-    with mock.patch("requests.get", return_value=request_failure):
+    with mock.patch("requests.Session.get", return_value=request_failure):
         check.check(config)
 
     aggregator.assert_metric("filebeat.harvester.running", count=0)

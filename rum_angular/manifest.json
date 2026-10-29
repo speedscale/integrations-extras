@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "0dd38c9b-921d-4252-8c46-c7a6d83c5778",
   "app_id": "rum-angular",
+  "owner": "rum-browser",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -12,13 +13,10 @@
     "title": "Angular",
     "media": [],
     "classifier_tags": [
+      "Category::Metrics",
+      "Category::Tracing",
       "Supported OS::Any",
-      "Category::Monitoring", 
-      "Category::Network", 
-      "Category::Exceptions", 
-      "Category::Metrics", 
-      "Category::Alerting", 
-      "Category::Issue Tracking"
+      "Offering::Integration"
     ]
   },
   "author": {
@@ -27,5 +25,5 @@
     "homepage": "https://www.datadoghq.com",
     "sales_email": "info@datadoghq.com"
   },
-  "oauth": {}
+  "assets": {}
 }

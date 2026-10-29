@@ -1,4 +1,4 @@
-# Agent Check: gatekeeper 
+# Agent Check: gatekeeper
 
 ## Overview
 
@@ -35,7 +35,7 @@ To install the gatekeeper check on your Kubernetes cluster:
 3. Update your `ddev` config with the `integrations-extras/` path:
 
    ```shell
-   ddev config set extras ./integrations-extras
+   ddev config set repos.extras ./integrations-extras
    ```
 
 4. To build the `gatekeeper` package, run:
@@ -126,7 +126,7 @@ Need help? Contact [Datadog support][10].
 [1]: https://github.com/open-policy-agent/gatekeeper
 [2]: https://raw.githubusercontent.com/DataDog/integrations-extras/master/gatekeeper/images/gatekeeper_dashboard.png
 [3]: https://docs.datadoghq.com/agent/kubernetes/integrations/
-[4]: https://docs.datadoghq.com/developers/integrations/new_check_howto/#developer-toolkit
+[4]: https://docs.datadoghq.com/developers/integrations/python/
 [5]: https://docs.datadoghq.com/agent/kubernetes/daemonset_setup/?tab=k8sfile
 [6]: https://github.com/DataDog/integrations-extras/blob/master/gatekeeper/datadog_checks/gatekeeper/data/conf.yaml.example
 [7]: https://docs.datadoghq.com/agent/guide/agent-commands/#start-stop-and-restart-the-agent

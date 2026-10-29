@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "d2496eee-ced1-4bf2-a85d-b8277b4952cf",
   "app_id": "rum-javascript",
+  "owner": "rum-browser",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -12,13 +13,11 @@
     "title": "JavaScript",
     "media": [],
     "classifier_tags": [
+      "Category::Languages",
+      "Category::Metrics",
+      "Category::Tracing",
       "Supported OS::Any",
-      "Category::Monitoring", 
-      "Category::Network", 
-      "Category::Exceptions", 
-      "Category::Metrics", 
-      "Category::Alerting", 
-      "Category::Issue Tracking"
+      "Offering::Integration"
     ]
   },
   "author": {
@@ -27,5 +26,5 @@
     "homepage": "https://www.datadoghq.com",
     "sales_email": "info@datadoghq.com"
   },
-  "oauth": {}
+  "assets": {}
 }

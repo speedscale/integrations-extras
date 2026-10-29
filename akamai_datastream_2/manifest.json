@@ -1,32 +1,85 @@
 {
-  "display_name": "Akamai DataStream 2",
-  "maintainer": "help@datadoghq.com",
-  "manifest_version": "1.0.0",
-  "name": "akamai_datastream_2",
-  "metric_prefix": "akamai_datastream.",
-  "creates_events": false,
-  "short_description": "Send your Akamai DataStream logs to Datadog",
-  "guid": "864804b8-5a2a-4fd2-be08-ca23219c48ef",
-  "support": "contrib",
-  "supported_os": [
-    "linux",
-    "mac_os",
-    "windows"
-  ],
-  "public_title": "Akamai DataStream 2",
-  "categories": [
-  ],
-  "type": "check",
-  "is_public": true,
-  "integration_id": "akamai-datastream-2",
+  "manifest_version": "2.0.0",
+  "app_uuid": "9a772881-d31a-4ffb-92bb-7beef1088a55",
+  "app_id": "akamai-datastream-2",
+  "owner": "saas-integrations",
+  "display_on_public_website": true,
+  "tile": {
+    "overview": "README.md#Overview",
+    "configuration": "README.md#Setup",
+    "support": "README.md#Support",
+    "changelog": "CHANGELOG.md",
+    "description": "Send your Akamai DataStream 2 logs to Datadog",
+    "title": "Akamai DataStream 2",
+    "media": [
+      {
+        "media_type": "image",
+        "caption": "Akamai DataStream 2 Overview",
+        "image_url": "images/akamai_datastream_2_dashboard_1.png"
+      },
+      {
+        "media_type": "image",
+        "caption": "Akamai DataStream 2 Overview",
+        "image_url": "images/akamai_datastream_2_dashboard_2.png"
+      },
+      {
+        "media_type": "image",
+        "caption": "Akamai DataStream 2 Overview",
+        "image_url": "images/akamai_datastream_2_dashboard_3.png"
+      },
+      {
+        "media_type": "image",
+        "caption": "Akamai DataStream 2 Overview",
+        "image_url": "images/akamai_datastream_2_dashboard_4.png"
+      },
+      {
+        "media_type": "image",
+        "caption": "Akamai DataStream 2 Overview",
+        "image_url": "images/akamai_datastream_2_dashboard_5.png"
+      }
+    ],
+    "classifier_tags": [
+      "Category::Caching",
+      "Category::Content Delivery Network",
+      "Category::Log Collection",
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS",
+      "Offering::Integration"
+    ],
+    "resources": [
+      {
+        "resource_type": "blog",
+        "url": "https://www.datadoghq.com/blog/monitor-akamai-datastream2/"
+      }
+    ]
+  },
+  "author": {
+    "support_email": "help@datadoghq.com",
+    "homepage": "https://github.com/DataDog/integrations-extras",
+    "sales_email": "help@datadoghq.com",
+    "name": "Datadog"
+  },
   "assets": {
+    "integration": {
+      "source_type_name": "Akamai DataStream 2",
+      "configuration": {},
+      "events": {
+        "creates_events": false
+      },
+      "metrics": {
+        "prefix": "akamai_datastream.",
+        "metadata_path": "metadata.csv",
+        "check": []
+      },
+      "service_checks": {
+        "metadata_path": "assets/service_checks.json"
+      },
+      "source_type_id": 10273,
+      "auto_install": true
+    },
     "dashboards": {
       "Akamai DataStream 2": "assets/dashboards/akamai_datastream_2_overview.json"
-    },
-    "saved_views": {},
-    "monitors": {},
-    "service_checks": "assets/service_checks.json",
-    "logs": {},
-    "metrics_metadata": "metadata.csv"
+    }
   }
 }

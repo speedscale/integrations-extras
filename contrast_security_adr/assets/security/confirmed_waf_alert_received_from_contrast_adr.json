@@ -1,0 +1,74 @@
+{
+  "name": "Confirmed WAF alert received from Contrast ADR",
+  "partnerRuleId": "ext-00g-gwc",
+  "message": "### Summary:\nWAF Alert Confirmed {{@result}}  by Contrast ADR on {{@url}}  endpoint of {{@application.name}}\n   \n### Actions:\n\n View recommended actions at https://contrastsecurity.dev/adr-runbooks/runbooks/{{@rule}}\n\nView in Contrast Security ADR: {{@uiUrl}}",
+  "id": "lrk-h3m-hto",
+  "tags": [],
+  "type": "log_detection",
+  "cases": [
+    {
+      "name": "Condition 1",
+      "status": "info",
+      "condition": "b > 0 && a > 0 ",
+      "notifications": []
+    }
+  ],
+  "isBeta": false,
+  "creator": {
+    "name": "Pragati Gupta",
+    "handle": "pragati.gupta@contrastsecurity.com"
+  },
+  "filters": [],
+  "options": {
+    "keepAlive": 3600,
+    "detectionMethod": "threshold",
+    "evaluationWindow": 300,
+    "maxSignalDuration": 86400
+  },
+  "queries": [
+    {
+      "name": "",
+      "query": "source:contrast-security-adr tags:attack_event @result:((EXPLOITED OR exploited) OR (BLOCKED OR blocked)) service:ContrastADR",
+      "dataSource": "logs",
+      "aggregation": "count",
+      "groupByFields": [
+        "@sourceIp"
+      ],
+      "distinctFields": [],
+      "hasOptionalGroupByFields": false
+    },
+    {
+      "name": "",
+      "query": "source:waf_test",
+      "dataSource": "logs",
+      "aggregation": "count",
+      "groupByFields": [
+        "@targetip"
+      ],
+      "distinctFields": [],
+      "hasOptionalGroupByFields": false
+    }
+  ],
+  "updater": {
+    "name": "Harsha Nagendra",
+    "handle": "harsha.nagendra@contrastsecurity.com"
+  },
+  "version": 37,
+  "blocking": false,
+  "metadata": {
+    "sources": [
+      "waf_test",
+      "contrast-security-adr"
+    ],
+    "entities": []
+  },
+  "createdAt": 1747814166967,
+  "isDefault": false,
+  "isDeleted": false,
+  "isPartner": false,
+  "updatedAt": 1764678406973,
+  "isDeprecated": false,
+  "updateAuthorId": 64082222,
+  "creationAuthorId": 22452697,
+  "hasExtendedTitle": true
+}

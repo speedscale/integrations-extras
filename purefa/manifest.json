@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "a2d8f393-62cd-4ece-bfab-e30797698b12",
   "app_id": "purefa",
+  "owner": "integrations-developer-platform",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -28,12 +29,12 @@
       }
     ],
     "classifier_tags": [
+      "Category::Data Stores",
+      "Category::OS & System",
+      "Offering::Integration",
       "Supported OS::Linux",
-      "Supported OS::Mac OS",
       "Supported OS::Windows",
-      "Category::OS System",
-      "Category::Data Store",
-      "Offering::Integration"
+      "Supported OS::macOS"
     ]
   },
   "author": {
@@ -42,7 +43,6 @@
     "support_email": "pure-observability@purestorage.com",
     "sales_email": "sales@purestorage.com"
   },
-  "oauth": {},
   "assets": {
     "integration": {
       "source_type_name": "PureFA",
@@ -59,10 +59,13 @@
       },
       "service_checks": {
         "metadata_path": "assets/service_checks.json"
-      }
+      },
+      "source_type_id": 10256,
+      "auto_install": true
     },
     "dashboards": {
-      "purefa_overview": "dashboards/purefa_overview.json"
+      "purefa_overview": "assets/dashboards/purefa_overview.json",
+      "purefa_overview_legacy": "assets/dashboards/purefa_overview_legacy.json"
     }
   }
 }

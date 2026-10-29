@@ -1,7 +1,13 @@
-# CHANGELOG - AngularJS
+# CHANGELOG - Angular
 
-1.0.0
-==================
-### Changes
+## 2.0.0
 
-* [FEATURE] Initial AngularJS RUM Integration Tile.
+**_Added_**:
+
+* Add documentation for the RUM Angular integration plugin
+
+## 1.0.0
+
+**_Added_**:
+
+* Initial Angular RUM Integration Tile.

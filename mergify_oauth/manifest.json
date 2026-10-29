@@ -1,0 +1,84 @@
+{
+  "manifest_version": "2.0.0",
+  "app_uuid": "3b53fe32-b47e-4a29-881f-b90397a11589",
+  "app_id": "mergify-oauth",
+  "owner": "integrations-developer-platform",
+  "display_on_public_website": true,
+  "tile": {
+    "overview": "README.md#Overview",
+    "configuration": "README.md#Setup",
+    "support": "README.md#Support",
+    "uninstallation": "README.md#Uninstallation",
+    "changelog": "CHANGELOG.md",
+    "description": "Monitor your Mergify merge queue stats",
+    "title": "Mergify",
+    "media": [
+      {
+        "media_type": "image",
+        "caption": "Mergify - Merge Queue Stats",
+        "image_url": "images/dashboard.png"
+      }
+    ],
+    "classifier_tags": [
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS",
+      "Submitted Data Type::Metrics",
+      "Category::Developer Tools",
+      "Offering::Integration"
+    ]
+  },
+  "assets": {
+    "dashboards": {
+      "Mergify - Merge Queue Stats": "assets/dashboards/mergify_merge_queue_stats.json"
+    },
+    "integration": {
+      "source_type_name": "Mergify OAuth",
+      "configuration": {},
+      "events": {
+        "creates_events": false
+      },
+      "metrics": {
+        "metadata_path": "metadata.csv",
+        "check": [
+          "mergify.merge_queue_length",
+          "mergify.time_to_merge.median",
+          "mergify.time_to_merge.mean",
+          "mergify.queue_checks_outcome",
+          "mergify.queue.entered",
+          "mergify.queue.merged",
+          "mergify.queue.size.max",
+          "mergify.queue.batch_size.sum",
+          "mergify.queue.batch_size.count",
+          "mergify.queue.running_checks.max",
+          "mergify.queue.exit_reason",
+          "mergify.queue.check_outcome",
+          "mergify.queue.checks_retries.recovered",
+          "mergify.queue.checks_retries.not_recovered",
+          "mergify.queue.bisection.started",
+          "mergify.queue.total_queue_time.sum",
+          "mergify.queue.total_queue_time.count",
+          "mergify.queue.ci_runtime.sum",
+          "mergify.queue.ci_runtime.count",
+          "mergify.queue.idle.capacity.sum",
+          "mergify.queue.idle.schedule.sum",
+          "mergify.queue.idle.freeze.sum",
+          "mergify.queue.idle.count"
+        ],
+        "prefix": "mergify."
+      },
+      "service_checks": {
+        "metadata_path": "assets/service_checks.json"
+      },
+      "source_type_id": 10350,
+      "auto_install": true
+    },
+    "oauth": "assets/oauth_clients.json"
+  },
+  "author": {
+    "support_email": "support@mergify.com",
+    "name": "Mergify",
+    "homepage": "https://mergify.com",
+    "sales_email": "hello@mergify.com"
+  }
+}

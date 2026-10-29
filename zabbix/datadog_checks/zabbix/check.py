@@ -6,12 +6,12 @@ from .metrics import METRICS
 
 
 class ZabbixCheck(AgentCheck):
-
     SERVICE_CHECK_NAME = "zabbix.can_connect"
 
     def __init__(self, name, init_config, instances):
         super(ZabbixCheck, self).__init__(name, init_config, instances)
         self.tags = self.instance.get('tags', [])
+        self._auth_user_param = None  # Cache for 'user' or 'username' parameter
 
     def request(self, zabbix_api, req_data):
         req_header = {
@@ -28,19 +28,39 @@ class ZabbixCheck(AgentCheck):
         return res.json()
 
     def login(self, zabbix_user, zabbix_pass, zabbix_api):
-        req_data = json.dumps(
-            {
-                'jsonrpc': '2.0',
-                'method': 'user.login',
-                'params': {'user': zabbix_user, 'password': zabbix_pass},
-                'id': 1,
-            }
-        )
         self.log.debug("Logging in with params user=%s api=%s", zabbix_user, zabbix_api)
 
-        response = self.request(zabbix_api, req_data)
-        token = response.get('result')
-        return token
+        # If we've already discovered which parameter works, use it directly
+        params_to_try = [self._auth_user_param] if self._auth_user_param else ['user', 'username']
+
+        # Try both 'user' (older versions) and 'username' (Zabbix 5.4+) for backward compatibility
+        for user_param in params_to_try:
+            req_data = json.dumps(
+                {
+                    'jsonrpc': '2.0',
+                    'method': 'user.login',
+                    'params': {user_param: zabbix_user, 'password': zabbix_pass},
+                    'id': 1,
+                }
+            )
+            response = self.request(zabbix_api, req_data)
+            token = response.get('result')
+
+            if token:
+                # Cache the successful parameter for future requests
+                if not self._auth_user_param:
+                    self._auth_user_param = user_param
+                    self.log.debug("Cached auth parameter: %s", user_param)
+                return token
+
+            # Only retry with 'username' parameter if we got an invalid params error
+            error = response.get('error', {})
+            if error.get('code') != -32602:
+                break
+
+        raise Exception(
+            'Unable to login with params user={} api={}: {}'.format(zabbix_user, zabbix_api, response.get('error'))
+        )
 
     def logout(self, token, zabbix_api):
         req_data = json.dumps({'jsonrpc': '2.0', 'method': 'user.logout', 'params': {}, 'auth': token, 'id': 1})
@@ -175,6 +195,12 @@ class ZabbixCheck(AgentCheck):
             if item_name in METRICS:
                 history = self.get_history(token, hostid, itemid, value_type, zabbix_api)
                 mname = METRICS[item_name]
+
+                # To avoid sending non-numeric values as gauge
+                # https://www.zabbix.com/documentation/6.2/en/manual/api/reference/item/object?hl=value_typ#:~:text=ID%7D%2C%20%7BITEM.KEY%7D.-,value_type,-(required) # noqa: E501
+                if value_type != '0' and value_type != '3':
+                    self.log.debug('"%s" value is not numeric_float and numeric unsigned', item_name)
+                    continue
 
                 try:
                     dd_metricname = 'zabbix.' + mname

@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "7622c46e-bade-44ce-99e1-a3529bf4fc04",
   "app_id": "docontrol",
+  "owner": "integrations-developer-platform",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -48,13 +49,13 @@
       }
     ],
     "classifier_tags": [
-      "Supported OS::Linux",
-      "Supported OS::Mac OS",
-      "Supported OS::Windows",
-      "Category::Security",
-      "Category::Incidents",
       "Category::Automation",
-      "Category::Alerting"
+      "Category::Log Collection",
+      "Category::Security",
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS",
+      "Offering::Integration"
     ]
   },
   "author": {
@@ -63,6 +64,5 @@
     "support_email": "support@docontrol.io",
     "sales_email": "sales@docontrol.io"
   },
-  "oauth": {},
   "assets": {}
 }

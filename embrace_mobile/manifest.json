@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "86988058-9b89-45a8-b92f-5473a96e4a36",
   "app_id": "embrace-mobile",
+  "owner": "integrations-developer-platform",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -11,16 +12,6 @@
     "description": "Mobile observability for iOS, Android, React Native, and Unity",
     "title": "Embrace Mobile",
     "media": [
-      {
-        "media_type": "image",
-        "caption": "Monitor Embrace crash and networking data directly from Datadog by adding widgets.",
-        "image_url": "images/datadog_dashboard.jpg"
-      },
-      {
-        "media_type": "image",
-        "caption": "Investigate crashes by accessing every stack trace from every affected user session, alongside app and session details. For more context, navigate directly to the full user session replay in Embrace. ",
-        "image_url": "images/datadog_side_panel.jpg"
-      },
       {
         "media_type": "image",
         "caption": "Embrace's user session replays provide the full technical and behavioral details of every user session in a time-based visualization. Instantly identify the root cause without having to manually reproduce issues.",
@@ -38,16 +29,15 @@
       }
     ],
     "classifier_tags": [
-      "Supported OS::Linux",
-      "Supported OS::Mac OS",
-      "Supported OS::Windows",
-      "Category::Monitoring",
-      "Category::Network",
-      "Category::Exceptions",
-      "Category::Metrics",
-      "Category::Alerting",
       "Category::Issue Tracking",
-      "Offering::UI Extension"
+      "Category::Metrics",
+      "Category::Mobile",
+      "Category::Network",
+      "Offering::Integration",
+      "Submitted Data Type::Metrics",
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS"
     ]
   },
   "author": {
@@ -55,10 +45,33 @@
     "name": "Embrace",
     "support_email": "support@embrace.io"
   },
-  "oauth": {},
   "assets": {
     "dashboards": {
       "Embrace Overview": "assets/dashboards/embrace_mobile_overview.json"
+    },
+    "integration": {
+      "auto_install": true,
+      "configuration": {},
+      "events": {
+        "creates_events": false
+      },
+      "metrics": {
+        "check": ["embrace.session_total.five_minute",
+          "embrace.session_total.hourly",
+          "embrace.session_total.daily",
+          "embrace.crash_total.five_minute",
+          "embrace.crash_total.hourly",
+          "embrace.crash_total.daily",
+          "embrace.users_total.daily"
+        ],
+        "metadata_path": "metadata.csv",
+        "prefix": "embrace."
+      },
+      "service_checks": {
+        "metadata_path": "assets/service_checks.json"
+       },
+      "source_type_name": "Embrace",
+      "source_type_id": 25653134
     }
   }
 }

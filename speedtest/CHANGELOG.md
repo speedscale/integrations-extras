@@ -1,8 +1,13 @@
 # CHANGELOG - speedtest
 
-1.0.0/ Released
-=================
+## 2.0.0 / 2026-04-06
 
-### Changes
+***Changed***:
 
-* [FEATURE] adds speedtest integration.
+* Bump minimum `datadog-checks-base` version for integrations missed during Python 3.13 compatibility bump ([#2957](https://github.com/DataDog/integrations-extras/pull/2957))
+
+## 1.0.0
+
+***Added***:
+
+* adds speedtest integration.

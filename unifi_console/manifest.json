@@ -1,0 +1,49 @@
+{
+  "manifest_version": "2.0.0",
+  "app_uuid": "224a050d-7ed3-4e7a-ada6-410f61393fc0",
+  "app_id": "unifi-console",
+  "owner": "agent-integrations",
+  "display_on_public_website": true,
+  "tile": {
+    "overview": "README.md#Overview",
+    "configuration": "README.md#Setup",
+    "support": "README.md#Troubleshooting",
+    "changelog": "CHANGELOG.md",
+    "description": "This check collects metrics from the Unifi Controller",
+    "title": "Unifi Console",
+    "media": [],
+    "classifier_tags": [
+      "Supported OS::Linux",
+      "Supported OS::macOS",
+      "Supported OS::Windows",
+      "Offering::Integration"
+    ]
+  },
+  "author": {
+    "support_email": "antonin.bruneau@gmail.com",
+    "homepage": "https://github.com/DataDog/integrations-extras",
+    "sales_email": "antonin.bruneau@gmail.com",
+    "name": "Community"
+  },
+  "assets": {
+    "integration": {
+      "source_type_name": "Unifi Console",
+      "configuration": {
+        "spec": "assets/configuration/spec.yaml"
+      },
+      "events": {
+        "creates_events": false
+      },
+      "metrics": {
+        "prefix": "unifi_console.",
+        "check": "unifi_console.device.status",
+        "metadata_path": "metadata.csv"
+      },
+      "service_checks": {
+        "metadata_path": "assets/service_checks.json"
+      },
+      "source_type_id": 10298,
+      "auto_install": true
+    }
+  }
+}

@@ -45,16 +45,16 @@ class Ns1Url:
                             apiendpoint=self.api_endpoint, key=key, domain=domain, query=query_string
                         )
                         tags = ["network:{network}".format(network=v), "zone:{zone}".format(zone=domain)]
-                        urlkey = "{key}.{domain}.{netid}".format(key=key, domain=domain, netid=k)
+                        urlkey = r"{key}.{domain}.{netid}".format(key=key, domain=domain, netid=k)
                         urlList[urlkey] = [url, metric_name, tags, metric_type]
                 else:
                     query_string = "?period=1h&expand=false"
                     url = NS1_ENDPOINTS["qps.usage.zone"].format(
                         apiendpoint=self.api_endpoint, key=key, domain=domain, query=query_string
                     )
-                    tags = ["zone:{zone}".format(zone=domain)]
+                    tags = [r"zone:{zone}".format(zone=domain)]
 
-                    urlList["{key}.{domain}".format(key=key, domain=domain)] = [url, metric_zone, tags, metric_type]
+                    urlList[r"{key}.{domain}".format(key=key, domain=domain)] = [url, metric_zone, tags, metric_type]
 
                 if not records:
                     # if records are not specified, get all records for the zone, then build url for each record
@@ -77,7 +77,7 @@ class Ns1Url:
                                     )
                                     tags = [
                                         "network:{network}".format(network=v),
-                                        "zone:{zone}".format(zone=domain),
+                                        r"zone:{zone}".format(zone=domain),
                                         "record:{record}".format(record=rname),
                                         "type:{rectype}".format(rectype=rtype),
                                     ]
@@ -96,7 +96,7 @@ class Ns1Url:
                                     query=query_string,
                                 )
                                 tags = [
-                                    "zone:{zone}".format(zone=domain),
+                                    r"zone:{zone}".format(zone=domain),
                                     "record:{record}".format(record=rname),
                                     "type:{rectype}".format(rectype=rtype),
                                 ]
@@ -150,7 +150,7 @@ class Ns1Url:
                                 query=query_string,
                             )
                             tags = [
-                                "zone:{zone}".format(zone=domain),
+                                r"zone:{zone}".format(zone=domain),
                                 "record:{record}".format(record=rname),
                                 "type:{rectype}".format(rectype=rtype),
                             ]
@@ -158,47 +158,6 @@ class Ns1Url:
                             urlList[urlkey] = [url, metric_record, tags, metric_type]
                 else:
                     urlList[urlkey] = [url, metric_record, tags, metric_type]
-        return urlList
-
-    # generate url for DDI lease and lps statistics
-    def get_ddi_url(self, key, val, scopegroups):
-        urlList = {}
-        metric_lease = "leases"
-        metric_lps = "peak_lps"
-        metric_type_count = "count"
-        metric_type_gauge = "gauge"
-
-        # first get account-wide lease and lps stats
-        tags = ["scope_group:account_wide"]
-        url = NS1_ENDPOINTS["ddi.leases"].format(apiendpoint=self.api_endpoint)
-        urlList["leases"] = [url, metric_lease, tags, metric_type_count]
-
-        url = NS1_ENDPOINTS["ddi.lps"].format(apiendpoint=self.api_endpoint)
-        urlList["peak_lps"] = [url, metric_lps, tags, metric_type_gauge]
-
-        # if scope groups are specified, get stats for those requested
-        if not val:
-            return urlList
-
-        for scope_id in val:
-            if scope_id in scopegroups:
-
-                tags = ["scope_group:{scope_name}".format(scope_name=scopegroups[scope_id])]
-                url = NS1_ENDPOINTS["ddi.leases.scope"].format(apiendpoint=self.api_endpoint, scope_group_id=scope_id)
-                urlList["leases.{scope_group_id}".format(scope_group_id=scope_id)] = [
-                    url,
-                    metric_lease,
-                    tags,
-                    metric_type_count,
-                ]
-                url = NS1_ENDPOINTS["ddi.lps.scope"].format(apiendpoint=self.api_endpoint, scope_group_id=scope_id)
-                urlList["peak_lps.{scope_group_id}".format(scope_group_id=scope_id)] = [
-                    url,
-                    metric_lps,
-                    tags,
-                    metric_type_gauge,
-                ]
-
         return urlList
 
     def get_zone_info_url(self, key, val):
@@ -212,9 +171,9 @@ class Ns1Url:
                 metric_type = "gauge"
                 if domainList:
                     for domain in domainList:
-                        tags = ["record:{zone}".format(zone=domain)]
+                        tags = [r"record:{zone}".format(zone=domain)]
                         url = NS1_ENDPOINTS["ttl"].format(apiendpoint=self.api_endpoint, domain=domain)
-                        urlList["{key}.ttl.{domain}".format(key=key, domain=domain)] = [
+                        urlList[r"{key}.ttl.{domain}".format(key=key, domain=domain)] = [
                             url,
                             metric_record,
                             tags,
@@ -246,14 +205,14 @@ class Ns1Url:
 
         for record in val:
             for domain, rectype in record.items():
-                tags = ["record:{record}".format(record=domain)]
+                tags = [r"record:{record}".format(record=domain)]
                 metric_type = "count"
                 metric_record = "pulsar.decisions.record"
                 # pulsar decisions for record
                 url = NS1_ENDPOINTS["pulsar.decisions.record"].format(
                     apiendpoint=self.api_endpoint, query=query_string + "&agg=jobid&record=" + domain + "_" + rectype
                 )
-                k = "pulsar.decisions.{rec_name}.{rec_type}".format(rec_name=domain, rec_type=rectype)
+                k = r"pulsar.decisions.{rec_name}.{rec_type}".format(rec_name=domain, rec_type=rectype)
                 urlList[k] = [url, metric_record, tags, metric_type]
 
                 metric_record = "pulsar.routemap.hit.record"
@@ -261,14 +220,14 @@ class Ns1Url:
                 url = NS1_ENDPOINTS["pulsar.routemap.hit.record"].format(
                     apiendpoint=self.api_endpoint, rec_name=domain, rec_type=rectype, query=query_string
                 )
-                k = "pulsar.routemap.hit.{rec_name}.{rec_type}".format(rec_name=domain, rec_type=rectype)
+                k = r"pulsar.routemap.hit.{rec_name}.{rec_type}".format(rec_name=domain, rec_type=rectype)
                 urlList[k] = [url, metric_record, tags, metric_type]
                 metric_record = "pulsar.routemap.miss.record"
                 # route map misses by record
                 url = NS1_ENDPOINTS["pulsar.routemap.miss.record"].format(
                     apiendpoint=self.api_endpoint, rec_name=domain, rec_type=rectype, query=query_string
                 )
-                k = "pulsar.routemap.miss.{rec_name}.{rec_type}".format(rec_name=domain, rec_type=rectype)
+                k = r"pulsar.routemap.miss.{rec_name}.{rec_type}".format(rec_name=domain, rec_type=rectype)
                 urlList[k] = [url, metric_record, tags, metric_type]
         return urlList
 

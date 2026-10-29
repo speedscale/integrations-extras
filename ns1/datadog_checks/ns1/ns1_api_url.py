@@ -3,19 +3,11 @@ NS1_ENDPOINTS = {
     # qps and usage stats account wide
     "qps.usage": "{apiendpoint}/v1/stats/{key}{query}",
     # qps and usage stats per zone
-    "qps.usage.zone": "{apiendpoint}/v1/stats/{key}/{domain}{query}",
+    "qps.usage.zone": r"{apiendpoint}/v1/stats/{key}/{domain}{query}",
     # qps and usage stats per dns record
-    "qps.usage.record": "{apiendpoint}/v1/stats/{key}/{domain}/{record}/{rectype}{query}",
-    # lease stats account wide
-    "ddi.leases": "{apiendpoint}/v1/stats/leases?period=24h",
-    # lps account wide
-    "ddi.lps": "{apiendpoint}/v1/stats/lps?period=24h",
-    # leases for scope
-    "ddi.leases.scope": "{apiendpoint}/v1/stats/leases/{scope_group_id}?period=24h",
-    # lps for scope
-    "ddi.lps.scope": "{apiendpoint}/v1/stats/lps/{scope_group_id}?period=24h",
+    "qps.usage.record": r"{apiendpoint}/v1/stats/{key}/{domain}/{record}/{rectype}{query}",
     # ttl for zone
-    "ttl": "{apiendpoint}/v1/zones/{domain}",
+    "ttl": r"{apiendpoint}/v1/zones/{domain}",
     # account plan limits
     "billing": "{apiendpoint}/v1/account/billataglance",
     # pulsar decisions account wide

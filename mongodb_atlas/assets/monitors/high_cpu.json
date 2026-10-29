@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "created_at": "2023-03-30",
+  "last_updated_at": "2023-03-30",
+  "title": "CPU usage is higher than expected",
+  "tags": [
+    "integration:mongodb-atlas"
+  ],
+  "description": "CPU usage represents the percentage of a CPU's processing capacity that is in use. This monitor tracks anomalies in MongoDB Atlas system CPU usage by host, identifying deviations from expected CPU utilization patterns.",
+  "definition": {
+    "message": "Notify your team when CPU usage is higher than normal ({{value}} %)",
+    "name": "[MongoDB Atlas] CPU usage is higher than average on host: {{host.name}} ",
+    "options": {
+      "escalation_message": "",
+      "new_group_delay": 60,
+      "notify_audit": false,
+      "on_missing_data": "show_no_data",
+      "renotify_interval": 0,
+      "require_full_window": false,
+      "threshold_windows": {
+        "recovery_window": "last_15m",
+        "trigger_window": "last_15m"
+      },
+      "thresholds": {
+        "critical": 1,
+        "critical_recovery": 0
+      }
+    },
+    "query": "avg(last_4h):anomalies(avg:mongodb.atlas.system.cpu.norm.irq{*} by {host} + avg:mongodb.atlas.system.cpu.norm.nice{*} by {host} + avg:mongodb.atlas.system.cpu.norm.user{*} by {host} + avg:mongodb.atlas.system.cpu.norm.guest{*} by {host} + avg:mongodb.atlas.system.cpu.norm.steal{*} by {host} + avg:mongodb.atlas.system.cpu.norm.iowait{*} by {host} + avg:mongodb.atlas.system.cpu.norm.kernel{*} by {host} + avg:mongodb.atlas.system.cpu.norm.softirq{*} by {host}, 'agile', 2, direction='above', interval=60, alert_window='last_15m', count_default_zero='true', seasonality='hourly') >= 1",
+    "tags": [
+      "integration:mongodb-atlas"
+    ],
+    "type": "query alert"
+  }
+}

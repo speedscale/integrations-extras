@@ -1,34 +1,58 @@
 {
-  "display_name": "iLert",
-  "maintainer": "support@ilert.com",
-  "manifest_version": "1.0.0",
-  "name": "ilert",
-  "metric_prefix": "ilert.",
-  "metric_to_check": "",
-  "creates_events": false,
-  "short_description": "Get notified of your Datadog alerts & take actions using iLert.",
-  "guid": "875497b9-a27e-4099-92e9-968a70c592fa",
-  "support": "contrib",
-  "supported_os": [
-    "linux",
-    "mac_os",
-    "windows"
-  ],
-  "public_title": "iLert",
-  "categories": [
-    "issue tracking",
-    "collaboration",
-    "notification",
-    "monitoring"
-  ],
-  "type": "crawler",
-  "is_public": true,
-  "integration_id": "ilert",
+  "manifest_version": "2.0.0",
+  "app_uuid": "12731389-915a-4fb7-baec-3319f87dfc7f",
+  "app_id": "ilert",
+  "owner": "integrations-developer-platform",
+  "display_on_public_website": true,
+  "tile": {
+    "overview": "README.md#Overview",
+    "configuration": "README.md#Setup",
+    "support": "README.md#Support",
+    "changelog": "CHANGELOG.md",
+    "description": "Get notified of your Datadog alerts & take actions using ilert",
+    "title": "ilert",
+    "media": [
+      {
+        "media_type": "image",
+        "caption": "ilert alert list",
+        "image_url": "images/ilert-alert-list.png"
+      }
+    ],
+    "classifier_tags": [
+      "Category::Alerting",
+      "Category::Collaboration",
+      "Category::Incidents",
+      "Category::Issue Tracking",
+      "Category::Notifications",
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS",
+      "Offering::Integration"
+    ]
+  },
+  "author": {
+    "support_email": "support@ilert.com",
+    "homepage": "https://github.com/DataDog/integrations-extras",
+    "sales_email": "support@ilert.com",
+    "name": "ilert"
+  },
   "assets": {
-    "dashboards": {},
-    "saved_views": {},
-    "monitors": {},
-    "service_checks": "assets/service_checks.json",
-    "metrics_metadata": "metadata.csv"
+    "integration": {
+      "source_type_name": "iLert",
+      "configuration": {},
+      "events": {
+        "creates_events": true
+      },
+      "metrics": {
+        "prefix": "ilert.",
+        "check": [],
+        "metadata_path": "metadata.csv"
+      },
+      "service_checks": {
+        "metadata_path": "assets/service_checks.json"
+      },
+      "source_type_id": 10154,
+      "auto_install": true
+    }
   }
 }

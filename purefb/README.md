@@ -10,10 +10,10 @@ You can monitor multiple FlashBlades and aggregate these into a single dashboard
 
 **This integration requires the following**:
 
- - FlashBlade Purity 3.2.x+
+ - FlashBlade Purity 4.1.x+
  - Datadog Agent v7.26.x+ to use OpenMetricsBaseCheckV2
  - Python 3
- - The Pure Storage FlashBlade OpenMetrics exporter is installed and running in a containerized environment. Refer to the [Pure Storage GitHub repo][1] for installation instructions.
+ - The Pure Storage FlashBlade OpenMetrics exporter v1.0.11+ is installed and running in a containerized environment. Refer to the [Pure Storage GitHub repo][1] for installation instructions.
 
 ## Setup
 
@@ -27,7 +27,8 @@ Follow the instructions below to install and configure this check for an Agent r
 
 #### Host
 
-To configure this check for an Agent running on a host, run `datadog-agent integration install -t datadog-purefb==1.0.0`.
+To configure this check for an Agent running on a host, run `datadog-agent integration install -t datadog-purefb==2.0.0`.
+
 
 ### Configuration
 
@@ -127,13 +128,13 @@ For support or feature requests, contact Pure Storage through the following meth
 * Slack: [Pure Storage Code// Observability Channel][11].
 
 [1]: https://github.com/PureStorage-OpenConnect/pure-fb-openmetrics-exporter
-[2]: https://app.datadoghq.com/account/settings#agent
+[2]: /account/settings/agent/latest
 [3]: https://www.purestorage.com/products.html
 [4]: https://github.com/DataDog/integrations-extras/blob/master/purefb/data/conf.yaml.example
 [5]: https://docs.datadoghq.com/agent/guide/agent-commands/#start-stop-and-restart-the-agent
 [6]: https://docs.datadoghq.com/agent/guide/agent-commands/#agent-status-and-information
 [7]: https://github.com/DataDog/integrations-extras/blob/master/purefb/metadata.csv
-[9]: https://app.datadoghq.com/account/settings#agent
+[9]: /account/settings/agent/latest
 [10]: https://docs.datadoghq.com/agent/guide/community-integrations-installation-with-docker-agent
 [11]: https://code-purestorage.slack.com/messages/C0357KLR1EU
 [12]: https://github.com/DataDog/integrations-extras/blob/master/purefb/assets/service_checks.json

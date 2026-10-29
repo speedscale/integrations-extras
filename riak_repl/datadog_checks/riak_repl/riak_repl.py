@@ -9,7 +9,6 @@ from datadog_checks.base.errors import CheckException
 
 
 class RiakReplCheck(AgentCheck):
-
     REPL_STATS = {
         "server_bytes_sent",
         "server_bytes_recv",
@@ -95,7 +94,6 @@ class RiakReplCheck(AgentCheck):
                     )
 
         for c in connected_clusters:
-
             if stats['fullsync_enabled'] is not None:
                 if self.exists(stats['fullsync_coordinator'], [c]):
                     for key, val in iteritems(stats['fullsync_coordinator'][c]):
@@ -119,9 +117,8 @@ class RiakReplCheck(AgentCheck):
                                 "riak_repl.realtime_queue_stats.consumers." + key, val, tags=tags + ['cluster:%s' % c]
                             )
 
-            if (
-                self.exists(stats['sinks'], ['sink_stats', 'rt_sink_connected_to'])
-                and type(stats['sinks']['sink_stats']['rt_sink_connected_to']) is dict
+            if self.exists(stats['sinks'], ['sink_stats', 'rt_sink_connected_to']) and isinstance(
+                stats['sinks']['sink_stats']['rt_sink_connected_to'], dict
             ):
                 for key, val in iteritems(stats['sinks']['sink_stats']['rt_sink_connected_to']):
                     if key in self.REALTIME_SINK_CONN:

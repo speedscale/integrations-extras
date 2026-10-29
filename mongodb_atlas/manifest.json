@@ -1,0 +1,82 @@
+{
+  "manifest_version": "2.0.0",
+  "app_uuid": "d7f734da-a1f7-4e3f-a590-ea154018a8d8",
+  "app_id": "mongodb-atlas",
+  "owner": "integrations-developer-platform",
+  "display_on_public_website": true,
+  "tile": {
+    "overview": "README.md#Overview",
+    "configuration": "README.md#Setup",
+    "support": "README.md#Support",
+    "changelog": "CHANGELOG.md",
+    "description": "Track Atlas read/write performance, Vector Search metrics, and more.",
+    "title": "MongoDB Atlas",
+    "media": [
+      {
+        "media_type": "image",
+        "caption": "MongoDB Atlas - Overview Dashboard",
+        "image_url": "images/mongodb_atlas_dashboard.png"
+      },
+      {
+        "media_type": "image",
+        "caption": "MongoDB Atlas - Vector Search Overview Dashboard",
+        "image_url": "images/mongodb_atlas_vector_search_dashboard.png"
+      }
+    ],
+    "classifier_tags": [
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS",
+      "Category::AI/ML",
+      "Category::Metrics",
+      "Offering::Integration"
+    ],
+    "resources": [
+      {
+        "resource_type": "blog",
+        "url": "https://www.datadoghq.com/blog/monitor-atlas-performance-metrics-with-datadog/"
+      },
+      {
+        "resource_type": "other",
+        "url": "https://www.mongodb.com/products/platform/atlas-for-government"
+      }
+    ]
+  },
+  "assets": {
+    "integration": {
+      "auto_install": true,
+      "source_type_name": "MongoDB Atlas",
+      "configuration": {},
+      "events": {
+        "creates_events": true
+      },
+      "metrics": {
+        "prefix": "mongodb.atlas.",
+        "check": "mongodb.atlas.connections.current",
+        "metadata_path": "metadata.csv"
+      },
+      "service_checks": {
+        "metadata_path": "assets/service_checks.json"
+      },
+      "source_type_id": 230
+    },
+    "monitors": {
+      "CPU usage is higher than expected": "assets/monitors/high_cpu.json",
+      "Memory usage is higher than normal": "assets/monitors/memory.json",
+      "Query efficiency is degrading": "assets/monitors/query_efficiency.json",
+      "Read latency is higher than expected": "assets/monitors/read_latency.json",
+      "Write latency is higher than expected": "assets/monitors/write_latency.json"
+    },
+    "dashboards": {
+      "MongoDB-Atlas-Overview": "assets/dashboards/MongoDB-Atlas-Overview_dashboard.json",
+      "MongoDB-Atlas-Vector-Search-Overview": "assets/dashboards/MongoDB-Atlas-Vector-Search-Overview_dashboard.json",
+      "MongoDB-dbStats-collStats-Dashboard": "assets/dashboards/MongoDB-Atlas-Database-Collection-Query-Overview_dashboard.json"
+    }
+  },
+  "author": {
+    "support_email": "frank.sun@mongodb.com",
+    "name": "MongoDB",
+    "homepage": "https://www.mongodb.com",
+    "sales_email": "field@mongodb.com"
+  }
+}

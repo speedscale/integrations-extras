@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "7144d0c5-42f2-4cc5-b562-5f77debc0c52",
   "app_id": "launchdarkly",
+  "owner": "integrations-developer-platform",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -16,25 +17,26 @@
         "caption": "A brief overview of LaunchDarkly.",
         "image_url": "images/video-thumbnail.png",
         "vimeo_id": 637675972
-      },
-      {
-        "media_type": "image",
-        "caption": "The LaunchDarkly dashboard configured with the LaunchDarkly flags widget and events integration.",
-        "image_url": "images/dashboard.png"
-      },
-      {
-        "media_type": "image",
-        "caption": "The LaunchDarkly dashboard with a the flag change side panel open.",
-        "image_url": "images/toggle-flag.png"
       }
     ],
     "classifier_tags": [
+      "Category::Configuration & Deployment",
+      "Category::Notifications",
+      "Offering::Integration",
       "Supported OS::Linux",
-      "Supported OS::Mac OS",
       "Supported OS::Windows",
-      "Category::Notification",
-      "Offering::UI Extension",
-      "Offering::Integration"
+      "Supported OS::macOS",
+      "Submitted Data Type::Metrics"
+    ],
+    "resources": [
+      {
+        "resource_type": "other",
+        "url": "https://launchdarkly.com"
+      },
+      {
+        "resource_type": "documentation",
+        "url": "https://docs.launchdarkly.com/integrations/datadog/events"
+      }
     ]
   },
   "author": {
@@ -43,7 +45,6 @@
     "support_email": "support@launchdarkly.com",
     "sales_email": "sales@launchdarkly.com"
   },
-  "oauth": {},
   "assets": {
     "integration": {
       "source_type_name": "LaunchDarkly",
@@ -58,10 +59,12 @@
       },
       "service_checks": {
         "metadata_path": "assets/service_checks.json"
-      }
+      },
+      "source_type_id": 10025,
+      "auto_install": true
     },
     "dashboards": {
-      "launchdarkly": "dashboards/launchdarkly.json"
+      "launchdarkly": "assets/dashboards/launchdarkly.json"
     }
   }
 }

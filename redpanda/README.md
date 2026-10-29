@@ -17,7 +17,7 @@ Connect Datadog with [Redpanda][1] to view key metrics and add additional metric
 
 #### Host
 
-To configure this check for an Agent running on a host, run `datadog-agent integration install -t datadog-redpanda==<INTEGRATION_VERSION>`.
+To configure this check for an Agent running on a host, run `datadog-agent integration install -t datadog-redpanda==2.2.0`.
 
 <!-- xxz tab xxx -->
 <!-- xxx tab "Containerized" xxx -->
@@ -33,7 +33,7 @@ To build an updated version of the Agent:
 ```dockerfile
 FROM gcr.io/datadoghq/agent:latest
 
-ARG INTEGRATION_VERSION=1.0.0
+ARG INTEGRATION_VERSION=2.2.0
 
 RUN agent integration install -r -t datadog-redpanda==${INTEGRATION_VERSION}
 ```
@@ -84,7 +84,12 @@ By default, collecting logs is disabled in the Datadog Agent. Log collection is 
    logs_enabled: true
    ```
 
-2. Add the following in your `redpanda.d/conf.yaml` file to start collecting your Redpanda logs:
+2. Make sure `dd-agent` user is member of `systemd-journal` group, if not, run following command as root:
+   ```
+   usermod -a -G systemd-journal dd-agent
+   ```
+
+3. Add the following in your `redpanda.d/conf.yaml` file to start collecting your Redpanda logs:
 
    ```yaml
     logs:
@@ -139,7 +144,7 @@ See [service_checks.json][7] for a list of service checks provided by this integ
 
 Need help? Contact [Datadog support][8].
 
-[1]: https://vectorized.io
+[1]: https://redpanda.com
 [2]: https://docs.datadoghq.com/agent/kubernetes/integrations/
 [3]: https://github.com/DataDog/integrations-extras/blob/master/redpanda/datadog_checks/redpanda/data/conf.yaml.example
 [4]: https://docs.datadoghq.com/agent/guide/agent-commands/#start-stop-and-restart-the-agent
@@ -147,6 +152,6 @@ Need help? Contact [Datadog support][8].
 [6]: https://github.com/DataDog/integrations-extras/blob/master/redpanda/metadata.csv
 [7]: https://github.com/DataDog/integrations-extras/blob/master/redpanda/assets/service_checks.json
 [8]: https://docs.datadoghq.com/help/
-[9]: https://app.datadoghq.com/account/settings#agent
+[9]: https://docs.datadoghq.com/containers/kubernetes/log/
 [10]: https://docs.datadoghq.com/agent/guide/community-integrations-installation-with-docker-agent
 [11]: https://docs.datadoghq.com/agent/guide/agent-configuration-files/#agent-configuration-directory

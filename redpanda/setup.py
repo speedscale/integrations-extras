@@ -53,7 +53,7 @@ setup(
     url='https://github.com/DataDog/integrations-extras',
     # Author details
     author='Roko Kruze',
-    author_email='support@vectorized.io',
+    author_email='support@redpanda.com',
     # License
     license='BSD-3-Clause',
     # See https://pypi.org/classifiers
@@ -63,8 +63,7 @@ setup(
         'Intended Audience :: System Administrators',
         'Topic :: System :: Monitoring',
         'License :: OSI Approved :: BSD License',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.13',
     ],
     # The package we're going to ship
     packages=['datadog_checks.redpanda'],

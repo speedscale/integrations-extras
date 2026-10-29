@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "created_at": "2023-03-30",
+  "last_updated_at": "2023-03-30",
+  "title": "Memory usage is higher than normal",
+  "tags": [
+    "integration:mongodb-atlas"
+  ],
+  "description": "Memory usage refers to the amount of RAM a system's processes and data consume. This monitor tracks anomalies in the combined virtual and resident memory usage of MongoDB Atlas by host, identifying deviations from expected memory consumption patterns.",
+  "definition": {
+    "message": "Notify your team when memory usage is higher than normal ({{value}} %)",
+    "name": "[MongoDB Atlas] Memory usage is higher than average on host: {{host.name}} ",
+    "options": {
+      "escalation_message": "",
+      "new_group_delay": 60,
+      "notify_audit": false,
+      "on_missing_data": "show_no_data",
+      "renotify_interval": 0,
+      "require_full_window": false,
+      "threshold_windows": {
+        "recovery_window": "last_15m",
+        "trigger_window": "last_15m"
+      },
+      "thresholds": {
+        "critical": 1,
+        "critical_recovery": 0
+      }
+    },
+    "query": "avg(last_4h):anomalies(avg:mongodb.atlas.mem.virtual{*} by {host} + avg:mongodb.atlas.mem.resident{*} by {host}, 'agile', 2, direction='above', interval=60, alert_window='last_15m', count_default_zero='true', seasonality='hourly') >= 1",
+    "tags": [
+      "integration:mongodb-atlas"
+    ],
+    "type": "query alert"
+  }
+}

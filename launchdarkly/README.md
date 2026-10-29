@@ -8,9 +8,9 @@ LaunchDarkly provides the following integrations with Datadog:
 
 The [LaunchDarkly][1] events integration for Datadog brings flag event markers to your monitoring dashboards, so you can see the effects of your LaunchDarkly feature deployments on your customer's services or systems. For instance, if a deployed feature causes a service to slow down, you can see the cause within Datadog.
 
-### Dashboard widget
+### Feature flag tracking integration
 
-LaunchDarkly's dashboard widget lets you pin a subset feature flag targeting toggles to your Datadog dashboards to monitor and perform a feature go-live from a single window.
+LaunchDarkly's feature flag tracking integration enriches your RUM data with your feature flags to provide visibility into performance monitoring and behavioral changes. Determine which users are shown a user experience and if it is negatively affecting the user's performance.
 
 ### Relay proxy metrics integration
 
@@ -22,24 +22,27 @@ If you are using the [LaunchDarkly Relay Proxy][2], you can configure it to expo
 
 The LaunchDarkly events integration uses a [Datadog API key][3], which can be created by a Datadog admin. Once you obtain a Datadog API key, see the [LaunchDarkly documentation for the Datadog integration][4] to learn how to setup the LaunchDarkly events integration for Datadog.
 
-### Dashboard widget
+### Feature flag tracking setup
 
-1. In Datadog, navigate to an existing dashboard or create a new one.
-2. Press the **Add Widgets** button to expose the widget drawer.
-3. Search for **LaunchDarkly** to find the LaunchDarkly widget in the **Apps** section of the widget drawer.
-4. Click or drag the LaunchDarkly widget icon to add it your your dashboard and open the **LaunchDarkly editor** modal.
-5. Press the **Connect** button to connect your LaunchDarkly account. A new window opens prompting you to authorize Datadog.
-6. Click **Authorize**. You are returned to Datadog.
-7. Next, configure the following widget options in the **LaunchDarkly editor**:
+Feature flag tracking is available in the RUM Browser SDK. For detailed set up instructions, visit the [Getting started with Feature Flag data in RUM][8] guide.
 
-   - **LaunchDarkly project**: The name of the LaunchDarkly project you wish to associate with the dashboard widget.
-   - **LaunchDarkly environment**: The name of the LaunchDarkly environment you wish to associate with the dashboard widget.
-   - **Environment template variable**: An optional [Datadog template variable](https://docs.datadoghq.com/dashboards/template_variables/) used to override the **LaunchDarkly environment** option.
-   - **LaunchDarkly tag filter**: An optional `+` separated list tags used to filter the feature flags displayed in the widget. If multiple tags are included, only flags that match **all** included tags appear in the widget. If omitted, all of the project's feature flags appear in the widget.
-   - **Sort**: The order the flags are displayed in the widget. Defaults to **Newest**.
+1. Update your Browser RUM SDK version 4.25.0 or above.
+2. Initialize the RUM SDK and configure the `enableExperimentalFeatures` initialization parameter with `["feature_flags"]`.
+3. Initialize LaunchDarkly's SDK and create an inspector reporting feature flag evaluations to Datadog using the snippet of code shown below.
 
-8. Optionally give the widget a title.
-9. Press **Save** to finish configuring the Datadog dashboard widget.
+```
+const client = LDClient.initialize("<APP_KEY>", "<USER_ID>", {
+  inspectors: [
+    {
+      type: "flag-used",
+      name: "dd-inspector",
+      method: (key: string, detail: LDClient.LDEvaluationDetail) => {
+        datadogRum.addFeatureFlagEvaluation(key, detail.value);
+      },
+    },
+  ],
+});
+```
 
 ### Relay Proxy metrics
 
@@ -73,8 +76,9 @@ Learn more about [LaunchDarkly][1] and the [Datadog events integration][4].
 
 [1]: https://launchdarkly.com
 [2]: https://docs.launchdarkly.com/home/relay-proxy
-[3]: https://app.datadoghq.com/organization-settings/api-keys
+[3]: /organization-settings/api-keys
 [4]: https://docs.launchdarkly.com/integrations/datadog/events
 [5]: https://github.com/launchdarkly/ld-relay/blob/v6/docs/metrics.md
 [6]: https://github.com/launchdarkly/ld-relay/blob/v6/docs/endpoints.md
 [7]: https://docs.datadoghq.com/help/
+[8]: https://docs.datadoghq.com/real_user_monitoring/guide/setup-feature-flag-data-collection/

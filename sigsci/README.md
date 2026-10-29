@@ -89,7 +89,7 @@ See [metadata.csv][13] for a list of metrics provided by this integration.
 
 ### Events
 
-All Signal Sciences events are sent to your [Datadog Event Stream][9]
+Events are created and sent to your [Datadog Event Stream][9] when an IP address is flagged in Signal Sciences.
 
 ### Service Checks
 
@@ -109,7 +109,7 @@ Additional helpful documentation, links, and articles:
 [2]: https://raw.githubusercontent.com/DataDog/integrations-extras/master/sigsci/images/datadog-sigsci-security.png
 [3]: https://docs.signalsciences.net/install-guides/
 [4]: https://docs.datadoghq.com/agent/kubernetes/dogstatsd/
-[5]: https://app.datadoghq.com/organization-settings/api-keys
+[5]: /organization-settings/api-keys
 [6]: https://dashboard.signalsciences.net
 [8]: https://docs.signalsciences.net/integrations/datadog/
 [9]: https://docs.datadoghq.com/events/

@@ -33,9 +33,9 @@ export JAVA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.
    Agent's configuration directory to start collecting Flume performance data.
    See the [sample `flume.d/conf.yaml`][8] file for all available configuration options.
 
-   This check has a limit of 350 metrics per instance. The number of returned metrics is indicated in the info page.
+   This check has a limit of 350 metrics per instance. The number of returned metrics is indicated in the status output.
    You can specify the metrics you are interested in by editing the configuration below.
-   To learn how to customize the metrics to collect, see the [JMX Checks documentation][9] for detailed instructions.
+   For detailed instructions on customizing the metrics to collect, see the [JMX Checks documentation][9].
    If you need to monitor more metrics, contact [Datadog support][10].
 
 3. [Restart the Agent][11]
@@ -68,7 +68,7 @@ Need help? Contact [Datadog support][10].
 
 
 [1]: https://flume.apache.org/
-[2]: https://app.datadoghq.com/account/settings#agent
+[2]: /account/settings/agent/latest
 [3]: https://docs.datadoghq.com/agent/guide/use-community-integrations/
 [4]: https://docs.datadoghq.com/getting_started/integrations/
 [7]: https://flume.apache.org/FlumeUserGuide.html#jmx-reporting

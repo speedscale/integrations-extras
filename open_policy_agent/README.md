@@ -1,4 +1,4 @@
-# Agent Check: open_policy_agent 
+# Agent Check: open_policy_agent
 
 ## Overview
 
@@ -22,7 +22,7 @@ To install the open_policy_agent check on your Kubernetes cluster:
 3. Update your `ddev` config with the `integrations-extras/` path:
 
    ```shell
-   ddev config set extras ./integrations-extras
+   ddev config set repos.extras ./integrations-extras
    ```
 
 4. To build the `open_policy_agent` package, run:
@@ -129,7 +129,7 @@ Need help? Contact [Datadog support][13].
 
 [1]: https://www.openpolicyagent.org/
 [2]: https://docs.datadoghq.com/agent/kubernetes/integrations/
-[3]: https://docs.datadoghq.com/developers/integrations/new_check_howto/#developer-toolkit
+[3]: https://docs.datadoghq.com/developers/integrations/python/
 [4]: https://docs.datadoghq.com/agent/kubernetes/daemonset_setup/?tab=k8sfile
 [5]: https://github.com/DataDog/integrations-extras/blob/master/open_policy_agent/datadog_checks/open_policy_agent/data/conf.yaml.example
 [6]: https://raw.githubusercontent.com/DataDog/integrations-extras/master/open_policy_agent/images/msg_facet.png

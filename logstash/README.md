@@ -2,18 +2,23 @@
 
 ## Overview
 
-Get metrics from Logstash service in real time to:
+Get metrics from Logstash in real time to:
 
 - Visualize and monitor Logstash states.
 - Be notified about Logstash events.
 
 ## Setup
 
-The Logstash check is not included in the [Datadog Agent][2] package, so you need to install it.
-
 ### Installation
 
-For Agent v7.21+ / v6.21+, follow the instructions below to install the Logstash check on your host. See [Use Community Integrations][3] to install with the Docker Agent or earlier versions of the Agent.
+The Logstash check is not included in the [Datadog Agent][1] package, so you need to install it.
+
+<!-- xxx tabs xxx -->
+<!-- xxx tab "Host" xxx -->
+
+#### Host
+
+For Agent v7.21+ / v6.21+, follow the instructions below to install the Logstash check on your host. For earlier versions of the Agent, see [Use Community Integrations][2]. 
 
 1. Run the following command to install the Agent integration:
 
@@ -21,33 +26,71 @@ For Agent v7.21+ / v6.21+, follow the instructions below to install the Logstash
    datadog-agent integration install -t datadog-logstash==<INTEGRATION_VERSION>
    ```
 
-2. Configure your integration similar to core [integrations][4].
+2. Configure your integration similar to core [integrations][3].
+
+<!-- xxz tab xxx -->
+<!-- xxx tab "Containerized" xxx -->
+
+#### Containerized
+
+Use the following Dockerfile to build a custom Datadog Agent image that includes the Logstash integration.
+
+```dockerfile
+FROM gcr.io/datadoghq/agent:latest
+RUN datadog-agent integration install -r -t datadog-logstash==<INTEGRATION_VERSION>
+```
+
+If you are using Kubernetes, update your Datadog Operator or Helm chart configuration to pull this custom Datadog Agent image.
+
+See [Use Community Integrations][2] for more context.
+
+<!-- xxz tab xxx -->
+<!-- xxz tabs xxx -->
 
 ### Configuration
 
-1. Edit the `logstash.d/conf.yaml` file in the `conf.d/` folder at the root of your [Agent's configuration directory][7] to start collecting your Logstash [metrics](#metric-collection) and [logs](#log-collection). See the [sample logstash.d/conf.yaml][8] for all available configuration options.
-
-2. [Restart the Agent][9]
-
 #### Metric collection
 
-Add this configuration setup to your `conf.yaml` file to start gathering your [Logstash metrics][10]:
+<!-- xxx tabs xxx -->
+<!-- xxx tab "Host" xxx -->
 
-```yaml
-init_config:
+##### Host
 
-instances:
-  # The URL where Logstash provides its monitoring API.
-  # This will be used to fetch various runtime metrics about Logstash.
-  #
-  - url: http://localhost:9600
-```
+1. Edit the `logstash.d/conf.yaml` file in the `conf.d/` folder at the root of your [Agent's configuration directory][4].
 
-Configure it to point to your server and port.
+   ```yaml
+   init_config:
 
-See the [sample conf.yaml][11] for all available configuration options.
+   instances:
+     # The URL where Logstash provides its monitoring API.
+     # This will be used to fetch various runtime metrics about Logstash.
+     #
+     - url: http://localhost:9600
+   ```
 
-Finally, [restart the Agent][12] to begin sending Logstash metrics to Datadog.
+   See the [sample logstash.d/conf.yaml][5] for all available configuration options.
+
+2. [Restart the Agent][6].
+
+<!-- xxz tab xxx -->
+<!-- xxx tab "Containerized" xxx -->
+
+##### Containerized
+
+For containerized environments, use an Autodiscovery template with the following parameters:
+
+| Parameter            | Value                                |
+| -------------------- | ------------------------------------ |
+| `<INTEGRATION_NAME>` | `logstash`                           |
+| `<INIT_CONFIG>`      | blank or `{}`                        |
+| `<INSTANCE_CONFIG>`  | `{"server": "http://%%host%%:9600"}` |
+
+To learn how to apply this template, see [Docker Integrations][7] or [Kubernetes Integrations][8].
+
+See the [sample logstash.d/conf.yaml][5] for all available configuration options.
+
+<!-- xxz tab xxx -->
+<!-- xxz tabs xxx -->
 
 #### Log collection
 
@@ -55,7 +98,9 @@ Datadog has [an output plugin][13] for Logstash that takes care of sending your 
 
 To install this plugin run the following command:
 
-- `logstash-plugin install logstash-output-datadog_logs`
+```shell
+logstash-plugin install logstash-output-datadog_logs
+```
 
 Then configure the `datadog_logs` plugin with your [Datadog API key][14]:
 
@@ -74,15 +119,26 @@ You can change this behavior by using the following parameters:
 - `use_compression`: Compression is only available for HTTP. Disable it by setting this to `false` (default is `true`).
 - `compression_level`: Set the compression level from HTTP. The range is from 1 to 9, 9 being the best ratio (default is `6`).
 
-Additional parameters can be used to change the endpoint used in order to go through a [proxy][15]:
+##### Proxy configuration
 
-- `host`: The proxy endpoint for logs not directly forwarded to Datadog (default value: `http-intake.logs.datadoghq.com`).
-- `port`: The proxy port for logs not directly forwarded to Datadog (default value: `80`).
-- `ssl_port`: The port used for logs forwarded with a secure TCP/SSL connection to Datadog (default value: `443`).
-- `use_ssl`: Instructs the Agent to initialize a secure TCP/SSL connection to Datadog (default value: `true`).
-- `no_ssl_validation`: Disables SSL hostname validation (default value: `false`).
+To send logs through a proxy server, use the `http_proxy` parameter:
 
-**Note**: Set `host` and `port` to your region {{< region-param key="http_endpoint" code="true" >}} {{< region-param key="http_port" code="true" >}}.
+```conf
+output {
+   datadog_logs {
+       api_key => "<DATADOG_API_KEY>"
+       http_proxy => "http://<PROXY_SERVER>:3128"
+   }
+}
+```
+
+See the Datadog [Proxy documentation][15] for additional configuration options.
+
+##### Regional endpoint configuration
+
+By default, the plugin sends logs to the Datadog US region. To send logs to a different Datadog region, configure the `host` parameter:
+
+**EU region example:**
 
 ```conf
 output {
@@ -92,6 +148,18 @@ output {
    }
 }
 ```
+
+**Note**: Set `host` to your region: {{< region-param key="http_endpoint" code="true" >}}.
+
+##### Advanced endpoint configuration
+
+You can use additional parameters to customize the Datadog endpoint connection:
+
+- `host`: The Datadog intake endpoint (default value: `http-intake.logs.datadoghq.com`).
+- `port`: The port for HTTP connections (default value: `80`).
+- `ssl_port`: The port used for secure TCP/SSL connections (default value: `443`).
+- `use_ssl`: Initialize a secure TCP/SSL connection to Datadog (default value: `true`).
+- `no_ssl_validation`: Disables SSL hostname validation (default value: `false`).
 
 ##### Add metadata to your logs
 
@@ -164,23 +232,21 @@ Check that the `url` in `conf.yaml` is correct.
 
 If you need further help, contact [Datadog support][22].
 
-
-[2]: https://app.datadoghq.com/account/settings#agent
-[3]: https://docs.datadoghq.com/agent/guide/use-community-integrations/
-[4]: https://docs.datadoghq.com/getting_started/integrations/
-[7]: https://docs.datadoghq.com/agent/guide/agent-configuration-files/#agent-configuration-directory
-[8]: https://github.com/DataDog/integrations-extras/blob/master/logstash/datadog_checks/logstash/data/conf.yaml.example
-[9]: https://docs.datadoghq.com/agent/guide/agent-commands/#start-stop-and-restart-the-agent
-[10]: #metrics
-[11]: https://github.com/DataDog/integrations-extras/blob/master/logstash/datadog_checks/logstash/data/conf.yaml.example
-[12]: https://docs.datadoghq.com/agent/faq/agent-commands/#start-stop-restart-the-agent
+[1]: /account/settings/agent/latest
+[2]: https://docs.datadoghq.com/agent/guide/use-community-integrations/
+[3]: https://docs.datadoghq.com/getting_started/integrations/
+[4]: https://docs.datadoghq.com/agent/guide/agent-configuration-files/#agent-configuration-directory
+[5]: https://github.com/DataDog/integrations-extras/blob/master/logstash/datadog_checks/logstash/data/conf.yaml.example
+[6]: https://docs.datadoghq.com/agent/guide/agent-commands/#start-stop-and-restart-the-agent
+[7]: https://docs.datadoghq.com/containers/docker/integrations
+[8]: https://docs.datadoghq.com/containers/kubernetes/integrations/
 [13]: https://github.com/DataDog/logstash-output-datadog_logs
-[14]: https://app.datadoghq.com/organization-settings/api-keys
+[14]: /organization-settings/api-keys
 [15]: https://docs.datadoghq.com/agent/proxy/#proxy-for-logs
-[16]: /logs/#edit-reserved-attributes
-[17]: /logs/processing/#integration-pipelines
-[18]: /getting_started/tagging/assigning_tags
-[19]: https://app.datadoghq.com/infrastructure
+[16]: https://docs.datadoghq.com/logs/#edit-reserved-attributes
+[17]: https://docs.datadoghq.com/logs/processing/#integration-pipelines
+[18]: https://docs.datadoghq.com/getting_started/tagging/assigning_tags
+[19]: /infrastructure
 [20]: https://docs.datadoghq.com/agent/guide/agent-commands/#service-status
 [21]: https://github.com/DataDog/integrations-extras/blob/master/logstash/metadata.csv
 [22]: http://docs.datadoghq.com/help

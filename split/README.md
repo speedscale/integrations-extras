@@ -10,6 +10,8 @@ Integrate Split with Datadog to:
 - Correlate feature impact with application performance
 - Avoid critical issues before they happen. Disable features proactively based on Datadog metrics and alerts
 
+To enrich Real User Monitoring (RUM) data with your Split feature flags for visibility into performance and behavioral changes, see the [Split-RUM integration page][8].
+
 ## Setup
 
 - **In Datadog**: Create an API Key <span class="hidden-api-key">\${api_key}</span>
@@ -23,6 +25,10 @@ Integrate Split with Datadog to:
 ![Split Screenshot][4]
 
 Split data should be flowing into Datadog.
+
+### Feature Flag Tracking integration
+
+See the [Split-RUM integration page][8] for information about setting up feature flag tracking with the RUM Browser SDK.
 
 ## Data Collected
 
@@ -48,3 +54,5 @@ Need help? Contact [Datadog support][6].
 [4]: https://raw.githubusercontent.com/DataDog/integrations-extras/master/split/images/integrations-datadog.png
 [5]: https://docs.datadoghq.com/events/
 [6]: https://docs.datadoghq.com/help/
+[7]: https://docs.datadoghq.com/real_user_monitoring/guide/setup-feature-flag-data-collection/
+[8]: https://docs.datadoghq.com/integrations/split-rum/

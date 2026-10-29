@@ -2,6 +2,7 @@
   "manifest_version": "2.0.0",
   "app_uuid": "61207de8-cc1e-4915-a18a-7fb25093d85c",
   "app_id": "rum-react-native",
+  "owner": "rum-mobile",
   "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
@@ -12,17 +13,14 @@
     "title": "React Native",
     "media": [],
     "classifier_tags": [
+      "Category::Log Collection",
+      "Category::Metrics",
+      "Category::Mobile",
+      "Category::Network",
+      "Category::Tracing",
       "Supported OS::Android",
       "Supported OS::iOS",
-      "Supported OS::Linux",
-      "Supported OS::macOS",
-      "Supported OS::Windows",
-      "Category::Monitoring", 
-      "Category::Network", 
-      "Category::Exceptions", 
-      "Category::Metrics", 
-      "Category::Alerting", 
-      "Category::Issue Tracking"
+      "Offering::Integration"
     ]
   },
   "author": {
@@ -31,5 +29,5 @@
     "homepage": "https://www.datadoghq.com",
     "sales_email": "info@datadoghq.com"
   },
-  "oauth": {}
+  "assets": {}
 }

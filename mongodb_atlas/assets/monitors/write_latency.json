@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "created_at": "2023-03-30",
+  "last_updated_at": "2023-03-30",
+  "title": "Write latency is higher than expected",
+  "tags": [
+    "integration:mongodb-atlas"
+  ],
+  "description": "Write latency is the time it takes to persist data to a database during write operations. This monitor is tracking anomalies in MongoDB Atlas write operation latencies. It identifies deviations in write latencies exceeding the expected baseline.",
+  "definition": {
+    "message": "Notify your team when write latency is higher than usual ({{value}} ms)\n",
+    "name": "[MongoDB Atlas] Write Latency is higher than average for host: {{host.name}} ",
+    "options": {
+      "escalation_message": "",
+      "new_group_delay": 60,
+      "notify_audit": false,
+      "on_missing_data": "show_no_data",
+      "renotify_interval": 0,
+      "require_full_window": false,
+      "threshold_windows": {
+        "recovery_window": "last_15m",
+        "trigger_window": "last_15m"
+      },
+      "thresholds": {
+        "critical": 1,
+        "critical_recovery": 0
+      }
+    },
+    "query": "avg(last_4h):anomalies(avg:mongodb.atlas.oplatencies.writes.avg{*} by {host}, 'basic', 2, direction='above', interval=60, alert_window='last_15m', count_default_zero='true') >= 1",
+    "tags": [
+      "integration:mongodb-atlas"
+    ],
+    "type": "query alert"
+  }
+}

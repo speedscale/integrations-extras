@@ -37,6 +37,77 @@ def instance_org_none():
 
 
 @pytest.fixture()
+def instance_with_profiles():
+    return {
+        'url': 'https://api.cloudsmith.io/v1',
+        'cloudsmith_api_key': 'aaa',
+        'organization': 'cloudsmith',
+        'enable_realtime_bandwidth': False,
+        'bandwidth_interval': 'five_minutes',
+        'bandwidth_profiles': [
+            {
+                'name': 'prod-python',
+                'aggregate': 'bytes_downloaded_sum',
+                'repository': ['production'],
+                'package_format': ['python'],
+            },
+        ],
+    }
+
+
+@pytest.fixture()
+def instance_multi_profiles():
+    return {
+        'url': 'https://api.cloudsmith.io/v1',
+        'cloudsmith_api_key': 'aaa',
+        'organization': 'cloudsmith',
+        'enable_realtime_bandwidth': False,
+        'bandwidth_interval': 'five_minutes',
+        'bandwidth_profiles': [
+            {
+                'name': 'prod-bytes',
+                'aggregate': 'bytes_downloaded_sum',
+            },
+            {
+                'name': 'prod-requests',
+                'aggregate': 'request_count',
+            },
+        ],
+    }
+
+
+@pytest.fixture()
+def analytics_response_bytes():
+    return {
+        'results': [
+            {
+                'dimensions': {'aggregate': 'BYTES_DOWNLOADED_SUM', 'unit': 'bytes'},
+                'timestamps': ['2026-01-01T00:00:00Z', '2026-01-01T00:05:00Z'],
+                'values': [12345, 67890],
+            }
+        ]
+    }
+
+
+@pytest.fixture()
+def analytics_response_requests():
+    return {
+        'results': [
+            {
+                'dimensions': {'aggregate': 'REQUEST_COUNT', 'unit': 'requests'},
+                'timestamps': ['2026-01-01T00:00:00Z', '2026-01-01T00:05:00Z'],
+                'values': [42, 99],
+            }
+        ]
+    }
+
+
+@pytest.fixture()
+def analytics_response_empty():
+    return {'results': []}
+
+
+@pytest.fixture()
 def entitlements_test_json():
     entitlements_json = {
         'tokens': {
@@ -199,3 +270,215 @@ def usage_resp_critical():
         }
     }
     return usage_resp_critical
+
+
+@pytest.fixture()
+def audit_log_resp_good():
+    audit_log_resp_good = [
+        {
+            "actor": "test user",
+            "actor_ip_address": "XXX.XXX.XXX.XXX",
+            "actor_kind": "user",
+            "actor_location": {
+                "city": "XXX",
+                "continent": "Europe",
+                "country": "United Kingdom",
+                "country_code": "GB",
+                "latitude": "1",
+                "longitude": "1",
+                "postal_code": "BT11",
+            },
+            "actor_slug_perm": "msle0eeRYz0",
+            "actor_url": "https://api.cloudsmith.io/v1/users/profile/test/",
+            "context": "",
+            "event": "action.login",
+            "event_at": "2023-01-10T12:59:03.926729Z",
+            "object": "test",
+            "object_kind": "user",
+            "object_slug_perm": "msle0eeRYz0",
+            "uuid": "efb5b5b0-5b5b-5b5b-5b5b-5b5b5b5b5b5b",
+            "target": "cloudsmith-test",
+            "target_kind": "namespace",
+            "target_slug_perm": "eqr0eeRYz0",
+        }
+    ]
+    return audit_log_resp_good
+
+
+@pytest.fixture()
+def audit_log_resp_bad_json():
+    # create a bad response
+    audit_log_resp_bad_json = [
+        {
+            "actor_ip_address": "XXX.XXX.XXX.XXX",
+            "actor_kind": "user",
+            "actor_location": {
+                "continent": "Europe",
+                "country": "United Kingdom",
+                "country_code": "GB",
+                "latitude": "1",
+                "longitude": "1",
+                "postal_code": "BT11",
+            },
+            "actor_slug_perm": "msle0eeRYz0",
+            "actor_url": "https://api.cloudsmith.io/v1/users/profile/test/",
+            "context": "",
+            "object": "test",
+            "object_kind": "user",
+            "object_slug_perm": "msle0eeRYz0",
+            "uuid": "efb5b5b0-5b5b-5b5b-5b5b-5b5b5b5b5b5b",
+            "target": "cloudsmith-test",
+            "target_kind": "namespace",
+            "target_slug_perm": "eqr0eeRYz0",
+        }
+    ]
+    return audit_log_resp_bad_json
+
+
+@pytest.fixture()
+def vulnerabilitiy_resp_json():
+    vulnerabilitiy_resp_json = [
+        {
+            "identifier": "weqwqeqw",
+            "created_at": "2023-02-06T18:18:39.546636Z",
+            "package": {
+                "identifier": "reqwqeqw",
+                "name": "library/python",
+                "version": "1eff2926e10eed27freqreq3be53538b76eff4f61dfd1f81be4e0c5e854ad1ae5",
+                "url": "https://api.cloudsmith.io/v1/packages/cloudsmith-test/test/tqetq/",
+            },
+            "scan_id": 1,
+            "has_vulnerabilities": True,
+            "num_vulnerabilities": 88,
+            "max_severity": "Critical",
+        },
+        {
+            "identifier": "rqerqerqe",
+            "created_at": "2023-01-06T18:18:23.263269Z",
+            "package": {
+                "identifier": "ereqreq",
+                "name": "library/node",
+                "version": "a5b5ad15479f19b8r312be69cd52032becacf2f9c600ed16ecb628c9937c80",
+                "url": "https://api.cloudsmith.io/v1/packages/cloudsmith-test/test/tqetq/",
+            },
+            "scan_id": 1,
+            "has_vulnerabilities": True,
+            "num_vulnerabilities": 104,
+            "max_severity": "Critical",
+        },
+    ]
+    return vulnerabilitiy_resp_json
+
+
+@pytest.fixture()
+def vulnerabilitiy_resp_json_bad():
+    vulnerabilitiy_resp_json_bad = [
+        {
+            "identifier": "weqwqeqw",
+            "created_at": "2023-01-06T18:18:39.546636Z",
+            "package": {
+                "identifier": "reqwqeqw",
+                "version": "1eff2926e10eed27freqreq3be53538b76eff4f61dfd1f81be4e0c5e854ad1ae5",
+                "url": "https://api.cloudsmith.io/v1/packages/cloudsmith-test/test/tqetq/",
+            },
+            "scan_id": 1,
+            "has_vulnerabilities": True,
+            "num_vulnerabilities": 88,
+            "max_severity": "Medium",
+        }
+    ]
+    return vulnerabilitiy_resp_json_bad
+
+
+# Fixture for /license-policy-violation/ API response
+@pytest.fixture()
+def license_policy_violation_resp():
+    return {
+        "results": [
+            {
+                "event_at": "2025-04-29T18:04:36.943606Z",
+                "reasons": ["The package has a license which is on this policies deny list."],
+                "package": {
+                    "identifier": "KKE2ZsziqPSc",
+                    "name": "ruby-example",
+                    "version": "1.0.0",
+                    "url": "https://api.cloudsmith.io/v1/packages/ranjantestenv/testrepo/KKE2ZsziqPSc/",
+                },
+                "policy": {"name": "TestPolicy"},
+            }
+        ]
+    }
+
+
+# Bad fixture for /license-policy-violation/ API response
+@pytest.fixture()
+def license_policy_violation_resp_bad():
+    return {
+        "results": [
+            {
+                # Missing 'package' and 'policy'
+                "event_at": None,
+                "reasons": [],
+            }
+        ]
+    }
+
+
+# Fixture for /orgs/{org}/members/ API response
+@pytest.fixture()
+def members_resp():
+    return {
+        "results": [
+            {
+                "email": "test@cloudsmith.io",
+                "has_two_factor": True,
+                "joined_at": "2024-09-02T16:10:29.693984Z",
+                "last_login_at": "2025-04-28T16:27:21.857505Z",
+                "last_login_method": "SAML",
+                "role": "Owner",
+                "user": "test-user",
+                "user_id": "abc123",
+                "user_name": "Test User",
+                "user_url": "https://api.cloudsmith.io/v1/users/profile/test-user/",
+                "visibility": "Private",
+                "is_active": True,
+            }
+        ]
+    }
+
+
+# Bad fixture for /orgs/{org}/members/ API response
+@pytest.fixture()
+def members_resp_bad():
+    return {
+        "results": [
+            {
+                "email": "test@cloudsmith.io",
+                # Missing most user-related fields
+            }
+        ]
+    }
+
+
+# Alias fixture for good vulnerability policy response
+@pytest.fixture()
+def vuln_policy_violation_resp_good(license_policy_violation_resp):
+    return license_policy_violation_resp
+
+
+# Alias fixture for good members response
+@pytest.fixture()
+def members_resp_good(members_resp):
+    return members_resp
+
+
+@pytest.fixture()
+def instance_with_realtime():
+    """Instance with org-wide realtime bandwidth enabled, no profiles."""
+    return {
+        'url': 'https://api.cloudsmith.io/v1',
+        'cloudsmith_api_key': 'aaa',
+        'organization': 'cloudsmith',
+        'enable_realtime_bandwidth': True,
+        'bandwidth_interval': 'five_minutes',
+    }

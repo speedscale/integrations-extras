@@ -6,12 +6,19 @@ from datadog_checks.redpanda import RedpandaCheck
 
 from .common import (
     INSTANCE_ADDITIONAL_GROUPS,
+    INSTANCE_ADDITIONAL_HISTOGRAMS,
     INSTANCE_ADDITIONAL_METRICS,
     INSTANCE_DEFAULT_GROUPS,
+    INSTANCE_DEFAULT_HISTOGRAMS,
     INSTANCE_DEFAULT_METRICS,
+    INSTANCE_METRIC_GROUP_MAP,
     MOCK_REDPANDA_INSTANCE,
     get_metrics,
 )
+
+
+def assert_histogram(aggregator, metric):
+    aggregator.assert_histogram_bucket(metric, None, 0.1, 0.2, True, '', [], None, 1, False)
 
 
 @pytest.mark.unit
@@ -24,11 +31,25 @@ def test_instance_default_check(aggregator, dd_run_check, mock_http_response):
         aggregator.assert_metric(m)
     aggregator.assert_all_metrics_covered()
 
+    for m in INSTANCE_DEFAULT_HISTOGRAMS:
+        assert_histogram(aggregator, m)
+
 
 @pytest.mark.unit
 def test_instance_additional_check(aggregator, dd_run_check, mock_http_response):
     # add additional metric groups for validation
-    additional_metric_groups = ['redpanda.alien', 'redpanda.raft']
+    additional_metric_groups = [
+        'redpanda.cloud',
+        'redpanda.controller',
+        'redpanda.debug_bundle',
+        'redpanda.node_status',
+        'redpanda.pandaproxy',
+        'redpanda.scheduler',
+        'redpanda.schemaregistry',
+        'redpanda.iceberg',
+        'redpanda.transform',
+        'redpanda.wasm',
+    ]
 
     instance = deepcopy(MOCK_REDPANDA_INSTANCE)
     instance['metric_groups'] = additional_metric_groups
@@ -37,12 +58,15 @@ def test_instance_additional_check(aggregator, dd_run_check, mock_http_response)
 
     dd_run_check(c)
 
-    metrics_to_check = get_metrics(INSTANCE_DEFAULT_GROUPS + additional_metric_groups)
+    metrics_to_check = get_metrics(INSTANCE_DEFAULT_GROUPS + additional_metric_groups, INSTANCE_METRIC_GROUP_MAP)
 
     for m in metrics_to_check:
         aggregator.assert_metric(m)
     aggregator.assert_all_metrics_covered()
     aggregator.assert_service_check('redpanda.openmetrics.health', count=1)
+
+    for m in INSTANCE_ADDITIONAL_HISTOGRAMS:
+        assert_histogram(aggregator, m)
 
 
 @pytest.mark.unit
@@ -55,11 +79,14 @@ def test_instance_full_additional_check(aggregator, dd_run_check, mock_http_resp
     dd_run_check(c)
 
     metrics_to_check = INSTANCE_DEFAULT_METRICS + INSTANCE_ADDITIONAL_METRICS
-
     for m in metrics_to_check:
         aggregator.assert_metric(m)
     aggregator.assert_all_metrics_covered()
     aggregator.assert_service_check('redpanda.openmetrics.health', count=1)
+
+    histograms_to_check = INSTANCE_DEFAULT_HISTOGRAMS + INSTANCE_ADDITIONAL_HISTOGRAMS
+    for m in histograms_to_check:
+        assert_histogram(aggregator, m)
 
 
 @pytest.mark.unit
@@ -97,8 +124,24 @@ def test_check(aggregator, dd_run_check):
     dd_run_check(check)
 
     for m in INSTANCE_DEFAULT_METRICS:
-        # skipping as its only exposed when consumer group is created
-        if m == "redpanda.kafka.group_offset":
+        # skipping as these are only sent under certain conditions (usage, configurations, etc)
+        if m in [
+            "redpanda.kafka.group_count",
+            "redpanda.cluster.replicas",
+            "redpanda.kafka.partitions",
+            "redpanda.kafka.replicas",
+            "redpanda.kafka.group_offset",
+            "redpanda.kafka.group_topic_count",
+            "redpanda.kafka.group_lag_sum",
+            "redpanda.kafka.group_lag_max",
+            "redpanda.cluster.latest_cluster_metadata_manifest_age",
+            "redpanda.cluster.partition_schema_id_validation_records_failed.count",
+            "redpanda.tls.certificate_expires_at_timestamp_seconds",
+            "redpanda.tls.certificate_serial",
+            "redpanda.tls.certificate_valid",
+            "redpanda.tls.loaded_at_timestamp_seconds",
+            "redpanda.tls.truststore_expires_at_timestamp_seconds",
+        ]:
             continue
         aggregator.assert_metric(m)
     aggregator.assert_all_metrics_covered()

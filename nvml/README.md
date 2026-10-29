@@ -14,10 +14,17 @@ For Agent v7.21+ / v6.21+, follow the instructions below to install the NVML che
 
 1. Run the following command to install the Agent integration:
 
+   For Linux:
    ```shell
    datadog-agent integration install -t datadog-nvml==<INTEGRATION_VERSION>
    # You may also need to install dependencies since those aren't packaged into the wheel
-   sudo -u dd-agent -H /opt/datadog-agent/embedded/bin/pip3 install grpcio pynvml
+   sudo -u dd-agent -H /opt/datadog-agent/embedded/bin/pip3 install grpcio pynvml==11.5.3
+   ```
+   For Windows (Using Powershell run as admin):
+   ```shell
+   & "$env:ProgramFiles\Datadog\Datadog Agent\bin\agent.exe" integration install -t datadog-nvml==<INTEGRATION_VERSION>
+   # You may also need to install dependencies since those aren't packaged into the wheel
+   & "$env:ProgramFiles\Datadog\Datadog Agent\embedded3\python" -m pip install grpcio pynvml==11.5.3
    ```
 
 2. Configure your integration similar to core [integrations][4].
@@ -25,7 +32,7 @@ For Agent v7.21+ / v6.21+, follow the instructions below to install the NVML che
 If you are using Docker, there is an [example Dockerfile][15] in the NVML repository.
 
    ```shell
-   docker build --build-arg=DD_AGENT_VERSION=7.18.0 .
+   docker build -t dd-agent-nvml .
    ```
 
 If you're using Docker and Kubernetes, you need to expose the environment variables `NVIDIA_VISIBLE_DEVICES` and `NVIDIA_DRIVER_CAPABILITIES`. See the included Dockerfile for an example.
@@ -64,7 +71,7 @@ Need help? Contact [Datadog support][11].
 
 
 [1]: https://pypi.org/project/pynvml/
-[2]: https://app.datadoghq.com/account/settings#agent
+[2]: /account/settings/agent/latest
 [3]: https://docs.datadoghq.com/agent/guide/use-community-integrations/
 [4]: https://docs.datadoghq.com/getting_started/integrations/
 [7]: https://github.com/DataDog/integrations-extras/blob/master/nvml/datadog_checks/nvml/data/conf.yaml.example
@@ -74,6 +81,6 @@ Need help? Contact [Datadog support][11].
 [11]: https://docs.datadoghq.com/help
 [12]: https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/#monitoring-device-plugin-resources
 [13]: https://docs.nvidia.com/deploy/nvml-api/group__nvmlDeviceQueries.html
-[14]:https://github.com/NVIDIA/gpu-monitoring-tools/blob/master/exporters/prometheus-dcgm/dcgm-exporter/dcgm-exporter
+[14]: https://github.com/NVIDIA/dcgm-exporter
 [15]: https://github.com/DataDog/integrations-extras/blob/master/nvml/tests/Dockerfile
 [16]: https://github.com/DataDog/integrations-extras/blob/master/nvml/assets/service_checks.json

@@ -54,6 +54,9 @@ coverage.xml
 .pytest_cache/
 .benchmarks/
 
+# Junit
+**/.junit/**
+
 # Translations
 *.mo
 *.pot
@@ -116,4 +119,7 @@ wheelhouse/
 
 # pyenv versioning
 .python-version
+
+# Local Git worktrees
+.worktrees/
 

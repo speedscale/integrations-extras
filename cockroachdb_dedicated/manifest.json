@@ -1,39 +1,58 @@
 {
-  "name": "cockroachdb_dedicated",
-  "display_name": "CockroachDB Dedicated",
-  "maintainer": "help@datadoghq.com",
-  "manifest_version": "1.0.0",
-  "guid": "0d085e44-d2b1-4634-a7c7-201b42cb167b",
-  "integration_id": "cockroach-cloud",
-  "supported_os": [
-    "linux",
-    "mac_os",
-    "windows"
-  ],
-  "is_public": true,
-  "short_description": "Send your Cockroach Cloud metrics to DataDog.",
-  "metric_prefix": "crdb_dedicated.",
-  "metric_to_check": "crdb_dedicated.sys.rss",
-  "public_title": "CockroachDB Dedicated",
-  "creates_events": false,
+  "manifest_version": "2.0.0",
+  "app_uuid": "e0ab9a47-da5b-4008-8571-3842ac318f74",
+  "app_id": "cockroach-cloud",
+  "owner": "saas-integrations",
+  "display_on_public_website": true,
+  "tile": {
+    "overview": "README.md#Overview",
+    "configuration": "README.md#Setup",
+    "support": "README.md#Support",
+    "changelog": "CHANGELOG.md",
+    "description": "Send your Cockroach Cloud metrics to DataDog.",
+    "title": "Cockroach Cloud",
+    "media": [],
+    "classifier_tags": [
+      "Category::Data Stores",
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS",
+      "Offering::Integration"
+    ]
+  },
+  "author": {
+    "support_email": "help@datadoghq.com",
+    "homepage": "https://github.com/DataDog/integrations-extras",
+    "sales_email": "help@datadoghq.com",
+    "name": "Datadog"
+  },
   "assets": {
-    "dashboards": {
-      "cockroach_cloud_overview": "assets/dashboards/cockroach_cloud_overview.json"
+    "integration": {
+      "source_type_name": "CockroachDB Dedicated",
+      "configuration": {},
+      "events": {
+        "creates_events": false
+      },
+      "metrics": {
+        "prefix": "crdb_",
+        "check": [
+          "crdb_dedicated.sys.uptime",
+          "crdb_cloud.sys.uptime"
+        ],
+        "metadata_path": "metadata.csv"
+      },
+      "service_checks": {
+        "metadata_path": "assets/service_checks.json"
+      },
+      "source_type_id": 10274,
+      "auto_install": true
     },
-    "metrics_metadata": "metadata.csv",
-    "service_checks": "assets/service_checks.json",
+    "dashboards": {
+      "cockroach_cloud_dedicated_overview": "assets/dashboards/cockroach_cloud_dedicated_overview.json",
+      "cockroach_cloud_serverless_overview": "assets/dashboards/cockroach_cloud_serverless_overview.json"
+    },
     "logs": {
       "source": "cockroach-cloud"
-    },
-    "monitors": {},
-    "saved_views": {}
-  },
-  "support": "contrib",
-  "categories": [
-    ""
-  ],
-  "type": "check",
-  "aliases": [
-    "/integrations/cockroach_cloud"
-  ]
+    }
+  }
 }

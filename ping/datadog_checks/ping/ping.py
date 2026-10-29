@@ -2,15 +2,16 @@
 
 import platform
 import re
+import subprocess
 
-from datadog_checks.base import AgentCheck
+from datadog_checks.base import AgentCheck, ConfigurationError
 from datadog_checks.base.errors import CheckException
 from datadog_checks.base.utils.subprocess_output import get_subprocess_output
 
 
 class PingCheck(AgentCheck):
-
     SERVICE_CHECK_NAME = "network.ping.can_connect"
+    WINDOWS_OUTPUT_ENCODING = "oem"
 
     def _load_conf(self, instance):
         # Fetches the conf
@@ -25,36 +26,72 @@ class PingCheck(AgentCheck):
         return host, custom_tags, timeout, response_time
 
     def _exec_ping(self, timeout, target_host):
-        precmd = []
+        try:
+            split_url = target_host.split(":")
+        except Exception:  # Would be raised if url is not a string
+            raise ConfigurationError(self.CONFIGURATION_ERROR_MSG.format(target_host, 'host', 'string'))
+
+        # IPv6 address format: 2001:db8:85a3:8d3:1319:8a2e:370:7348
+        if len(split_url) == 8:  # It may then be a IP V6 address, we check that
+            for block in split_url:
+                if len(block) != 4:
+                    raise ConfigurationError(
+                        self.CONFIGURATION_ERROR_MSG.format(target_host, 'IPv6 address', 'valid address')
+                    )
+            # It's a correct IP V6 address
+            cmd = "ping6"
+        else:
+            cmd = "ping"
+
         if platform.system() == "Windows":  # pragma: nocover
-            precmd = ["cmd", "/c", "chcp 437 &"]  # Set code page to English for non-US Windows
             countOption = "-n"
             timeoutOption = "-w"
             # The timeout option is in ms on Windows
             # https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/ping
+            subprocess_timeout = timeout + 10
             timeout = timeout * 1000
         elif platform.system() == "Darwin":
             countOption = "-c"
-            timeoutOption = "-W"  # Also in ms on Mac
-            timeout = timeout * 1000
+            if cmd == "ping":
+                timeoutOption = "-W"  # Also in ms on Mac
+                timeout = timeout * 1000
+            else:
+                # Not timeout in Darwin's ping6, pass on default value of a neutral parameter instead...
+                timeoutOption = "-i"  # Wait between packets
+                timeout = 1
         else:
             # The timeout option is is seconds on Linux, leaving timeout as is
             # https://linux.die.net/man/8/ping
             countOption = "-c"
             timeoutOption = "-W"
 
-        self.log.debug("Running: ping %s %s %s %s %s", countOption, "1", timeoutOption, timeout, target_host)
+        command = [cmd, countOption, "1", timeoutOption, str(timeout), target_host]
+        self.log.debug("Running: %s", " ".join(command))
 
-        lines, err, retcode = get_subprocess_output(
-            precmd + ["ping", countOption, "1", timeoutOption, str(timeout), target_host],
-            self.log,
-            raise_on_empty_output=True,
-        )
+        if platform.system() == "Windows":
+            lines, err, retcode = self._exec_ping_windows(command, subprocess_timeout)
+        else:
+            lines, err, retcode = get_subprocess_output(command, self.log, raise_on_empty_output=True)
+
         self.log.debug("ping returned %s - %s - %s", retcode, lines, err)
         if retcode != 0:
             raise CheckException("ping returned {}: {}".format(retcode, err))
 
         return lines
+
+    def _exec_ping_windows(self, command, subprocess_timeout):
+        # ping emits localized output in the OEM code page; get_subprocess_output would hardcode a UTF-8 decode.
+        try:
+            result = subprocess.run(command, capture_output=True, timeout=subprocess_timeout)
+        except OSError as e:  # e.g. an IPv6 host maps to ping6, which has no executable on Windows
+            raise CheckException("unable to run {}: {}".format(command[0], e))
+        except subprocess.TimeoutExpired:
+            raise CheckException("ping timed out after {}s".format(subprocess_timeout))
+        out = result.stdout.decode(self.WINDOWS_OUTPUT_ENCODING, errors="replace")
+        err = result.stderr.decode(self.WINDOWS_OUTPUT_ENCODING, errors="replace")
+        if not out:
+            raise CheckException("ping produced no output ({})".format(err))
+        return out, err, result.returncode
 
     def check(self, instance):
         host, custom_tags, timeout, response_time = self._load_conf(instance)
@@ -68,7 +105,10 @@ class PingCheck(AgentCheck):
             if result:
                 length = result[0][0]
             else:
-                raise CheckException("No time= found ({})".format(lines))
+                result = re.findall(r"[<=]\s*([\d.]+)\s*ms", lines)
+                if not result:
+                    raise CheckException("No response time found ({})".format(lines))
+                length = result[0]
 
         except CheckException as e:
             self.log.info("%s is DOWN (%s)", host, e)

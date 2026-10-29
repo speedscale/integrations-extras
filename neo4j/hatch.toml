@@ -1,0 +1,14 @@
+[env.collectors.datadog-checks]
+
+[[envs.default.matrix]]
+python = ["3.13"]
+version = ["4.4","5.x"]
+
+[envs.default.overrides]
+matrix.version.env-vars = [
+  { key = "NEO4J_IMAGE", value = "4.4", if = ["4.4"] },
+  { key = "NEO4J_IMAGE", value = "5.17", if = ["5.x"] },
+]
+
+[envs.default]
+e2e-env = false

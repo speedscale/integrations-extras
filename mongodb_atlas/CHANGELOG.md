@@ -1,0 +1,54 @@
+# CHANGELOG - MongoDB Atlas
+
+## 1.4.0 / 2026-03-02
+
+***Added***:
+
+* Add Atlas Search index stats metrics for required memory and maximum indexed fields, nGram fields, and Lucene docs
+* Add Atlas Search process memory metrics for resident, virtual, and shared memory
+
+## 1.3.0 / 2026-02-17
+
+***Added***:
+
+* Add connection, ingress session queue, transaction, cursor, sharding statistics, profiler, WiredTiger cache, and disk throughput metrics
+
+## 1.2.2 / 2025-12-05
+
+***Changed***:
+
+* Updated mongodb.atlas.system.memory.* metrics to have units=kilobytes
+
+## 1.2.1 / 2025-10-14
+
+***Changed***:
+
+* Updated metric query on the “MongoDB Atlas – Database, Collection, and Query Overview” dashboard to use sum instead of avg and added template variables
+
+## 1.2.0 / 2025-09-10
+
+***Changed***:
+
+* Dashboard titles
+
+***Added***:
+
+* Add query shape metrics to the MongoDB Atlas - Database, Collection, and Query Overview dashboard
+
+## 1.1.0 / 2024-11-15
+
+***Added***:
+
+* MongoDB Atlas Opcounter TTL Delete metric and dashboard
+
+## 1.0.1 / 2023-07-19
+
+***Added***:
+
+* MongoDB Atlas Vector Search metrics and dashboard
+
+## 1.0.0 / 2023-03-21
+
+***Added***:
+
+* Initial release

@@ -2,7 +2,8 @@
   "manifest_version": "2.0.0",
   "app_uuid": "d98f7912-e5a3-48bc-b63e-612d835bf6b4",
   "app_id": "sosivio",
-  "display_on_public_website": false,
+  "owner": "integrations-developer-platform",
+  "display_on_public_website": true,
   "tile": {
     "overview": "README.md#Overview",
     "configuration": "README.md#Setup",
@@ -18,13 +19,14 @@
       }
     ],
     "classifier_tags": [
-      "Supported OS::Linux",
-      "Category::Notification",
-      "Category::Monitoring",
+      "Category::Alerting",
       "Category::Containers",
+      "Category::Kubernetes",
       "Category::Network",
+      "Category::Notifications",
       "Category::Orchestration",
-      "Category::Alerting"
+      "Supported OS::Linux",
+      "Offering::Integration"
     ]
   },
   "author": {
@@ -33,7 +35,6 @@
     "name": "Sosivio",
     "sales_email": "sales@sosiv.io"
   },
-  "oauth": {},
   "assets": {
     "integration": {
       "source_type_name": "Sosivio",
@@ -48,7 +49,9 @@
       },
       "service_checks": {
         "metadata_path": "assets/service_checks.json"
-      }
+      },
+      "source_type_id": 10285,
+      "auto_install": true
     },
     "dashboards": {
       "sosivio_overview.json": "./assets/dashboards/sosivio_overview.json"

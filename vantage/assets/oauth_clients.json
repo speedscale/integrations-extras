@@ -1,0 +1,30 @@
+{
+  "integration": {
+    "scopes": [
+      "usage_read",
+      "metrics_read",
+      "timeseries_query",
+      "billing_read",
+      "logs_read_config",
+      "logs_read_archives",
+      "logs_read_data",
+      "logs_read_index_data",
+      "logs_read_workspaces",
+      "monitors_read",
+      "apm_read",
+      "dashboards_read",
+      "mcp_read",
+      "incident_read",
+      "events_read",
+      "llm_observability_read"
+    ],
+    "name": "Vantage",
+    "client_role": "integration",
+    "onboarding_url": "https://console.vantage.sh/settings/integrations",
+    "redirect_uris": [
+      "https://console.vantage.sh/auth/datadog/callback"
+    ],
+    "description": "Vantage Cost Integration",
+    "id": "c32aa33c-4594-11ed-9ca8-da7ad0900002"
+  }
+}

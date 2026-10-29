@@ -101,12 +101,6 @@ class Ns1Check(AgentCheck):
             elif key == "account":
                 checkUrl.update(self.ns1.get_zone_info_url(key, val))
                 checkUrl.update(self.ns1.get_plan_details_url(key, val))
-            elif key == "ddi":
-                if val:
-                    scopegroups = self.get_ddi_scope_groups()
-                else:
-                    scopegroups = None
-                checkUrl.update(self.ns1.get_ddi_url(key, val, scopegroups))
             elif key == "pulsar":
                 checkUrl.update(self.ns1.get_pulsar_url(query_params))
             elif key == "pulsar_by_app":
@@ -116,16 +110,6 @@ class Ns1Check(AgentCheck):
                 checkUrl.update(self.ns1.get_pulsar_by_record_url(val, query_params))
 
         return checkUrl
-
-    def get_ddi_scope_groups(self):
-        url = "{apiendpoint}/v1/dhcp/scopegroup".format(apiendpoint=self.api_endpoint)
-        res = self.get_stats(url)
-        scopegroups = {}
-        for group in res:
-            group_id = group["id"]
-            group_name = group["name"]
-            scopegroups[group_id] = group_name
-        return scopegroups
 
     def get_networks(self, networks):
         url = "{apiendpoint}/v1/networks".format(apiendpoint=self.api_endpoint)
@@ -227,7 +211,6 @@ class Ns1Check(AgentCheck):
                 # find last timestamp that is >= last time stamp saved in file
                 res = sorted(graph, key=lambda x: x[0], reverse=True)
                 if res and len(res) > 0:
-
                     curr_timestamp = res[0][0]
                     curr_count = res[0][1]
 
@@ -345,7 +328,6 @@ class Ns1Check(AgentCheck):
             return None, False
 
     def extract_usage_count(self, key, jsonResult):
-
         try:
             graph = jsonResult[0]["graph"]
             # usage api will return array of dictionaries, we want to get 'graph' object
@@ -389,8 +371,14 @@ class Ns1Check(AgentCheck):
     def extract_billing(self, jsonResult):
         try:
             billing = {}
-            billing["usage"] = jsonResult["totals"]["queries"]
-            billing["limit"] = jsonResult["any"]["query_credit"]
+            billing["queries"] = {
+                "usage": jsonResult["totals"]["queries"],
+                "limit": jsonResult["any"]["query_credit"],
+            }
+            billing["records"] = {
+                "usage": jsonResult["totals"]["records"],
+                "limit": jsonResult["any"]["record_credit"],
+            }
             return billing, True
         except Exception:
             return None, False
@@ -484,14 +472,18 @@ class Ns1Check(AgentCheck):
         )
         self.log.info(msg)
         if metric_name == "billing":
-            for k, v in metric_value.items():
-                # {"usage": 1234, "limit": 500000}
-                # tag as either usage or limit
-                tags = ["billing:{btype}".format(btype=k)]
-                if metric_type == "gauge":
-                    self.gauge('ns1.billing', v, tags)
-                elif metric_type == "count":
-                    self.count('ns1.billing', v, tags)
+            for b_res, values in metric_value.items():
+                # {"queries": {...}, "records: {...}"}
+                # add tag as either queries or records
+                for k, v in values.items():
+                    # {"usage": 1234, "limit": 500000}
+                    # add tag as either usage or limit
+                    tags = ["billing:{}".format(k), "billing_resource:{}".format(b_res)]
+                    if metric_type == "gauge":
+                        self.gauge('ns1.billing', v, tags)
+                    elif metric_type == "count":
+                        self.count('ns1.billing', v, tags)
+
         elif metric_name == "pulsar.decisions":
             for k, v in metric_value.items():
                 pulsar_job_id = self.remove_prefix(k, "pulsar.decisions.")

@@ -2,13 +2,15 @@
 
 ## Overview
 
-Integrate with Logz.io alerts to see events taking place in real-time
+Logz.io is a unified SaaS platform that collects and analyzes logs, metrics, and traces. The platform includes AI features to improve troubleshooting, reduce response time, and help you manage costs.
 
-- Import alerts into Datadog
+This integration allows you to
+
+- View real-time Logz.io alerts in Datadog
 
 ![import_alert_from_logz][1]
 
-- Incorporate the events into a dashboard to identify correlations with metrics
+- Incorporate alert events into a dashboard to identify correlations with metrics
 
 ![dashboard][2]
 
@@ -43,6 +45,6 @@ Need help? Contact [Datadog support][5].
 
 [1]: https://raw.githubusercontent.com/DataDog/integrations-extras/master/logzio/images/import_alert_from_logz.jpg
 [2]: https://raw.githubusercontent.com/DataDog/integrations-extras/master/logzio/images/dashboard.png
-[3]: https://app.datadoghq.com/organization-settings/api-keys
+[3]: /organization-settings/api-keys
 [4]: http://logz.io/blog/log-correlation-datadog
 [5]: https://docs.datadoghq.com/help/

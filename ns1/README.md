@@ -17,7 +17,7 @@ For Agent v7.21+ / v6.21+, follow the instructions below to install the NS1 chec
 1. Run the following command to install the Agent integration:
 
    ```shell
-   datadog-agent integration install -t datadog-ns1==<INTEGRATION_VERSION>
+   datadog-agent integration install -t datadog-ns1==1.0.1
    ```
 
 2. Configure your integration similar to core [integrations][4].
@@ -59,7 +59,7 @@ Additional helpful documentation, links, and articles:
 
 
 [1]: https://ns1.com/
-[2]: https://app.datadoghq.com/account/settings#agent/overview
+[2]: /account/settings/agent/latest?platform=overview
 [3]: https://docs.datadoghq.com/agent/guide/community-integrations-installation-with-docker-agent/?tab=agentabovev68
 [4]: https://docs.datadoghq.com/getting_started/integrations/
 [5]: https://github.com/DataDog/integrations-extras/blob/master/ns1/datadog_checks/ns1/data/conf.yaml.example

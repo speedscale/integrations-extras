@@ -2,7 +2,8 @@
   "manifest_version": "2.0.0",
   "app_uuid": "302b6db7-d1d6-445c-ae20-00743775cb6b",
   "app_id": "apptrail",
-  "display_on_public_website": true,
+  "owner": "integrations-developer-platform",
+  "display_on_public_website": false,
   "tile": {
     "overview": "README.md#Overview",
     "configuration": "README.md#Setup",
@@ -43,13 +44,12 @@
       }
     ],
     "classifier_tags": [
-      "Supported OS::Linux",
-      "Supported OS::Mac OS",
-      "Supported OS::Windows",
-      "Category::Security",
       "Category::Log Collection",
-      "Category::Monitoring",
-      "Category::Alerting"
+      "Category::Security",
+      "Supported OS::Linux",
+      "Supported OS::Windows",
+      "Supported OS::macOS",
+      "Offering::Integration"
     ]
   },
   "author": {
@@ -58,6 +58,5 @@
     "sales_email": "sales@apptrail.com",
     "support_email": "support@apptrail.com"
   },
-  "oauth": {},
   "assets": {}
 }

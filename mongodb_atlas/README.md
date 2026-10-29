@@ -1,0 +1,63 @@
+## Overview
+
+MongoDB Atlas can push calculated metrics into Datadog to:
+
+- Visualize key MongoDB Atlas metrics.
+- Visualize MongoDB Atlas Vector Search metrics.
+- Correlate overall MongoDB Atlas performance with the rest of your applications.
+
+The integration includes out-of-the-box monitors and dedicated dashboards that enable you to view Atlas health and performance metrics. You can monitor throughput metrics, track the average latency of read/write operations over time, and create monitors that alert you when the number of current connections is approaching the maximum limit.
+
+With MongoDB Atlas Vector Search metrics, you can also confidently use Atlas Vector Search to index, retrieve, and build performant gen AI applications.
+
+**Note**: The MongoDB Atlas integration is only available on M10+ clusters.
+
+## Setup
+
+### Installation
+
+You can install the MongoDB Atlas integration by logging in to your Atlas portal.
+
+### Configuration
+
+1. Retrieve or create a Datadog [API key][1].
+2. In the [Atlas portal][2], enter a Datadog API key under **Integrations** -> **Datadog Settings**.
+3. Under **Datadog Settings**, toggle the metrics you want to monitor (database, collection, query shape). You can also choose to send user-defined resource tags.
+
+## Data Collected
+
+### Metrics
+
+See [metadata.csv][3] for a list of metrics provided by this integration.
+
+Query shape metrics (prefixed `mongodb.atlas.querystats`) carry `samplingstrategy` and `samplingrate` tags that describe how MongoDB Atlas collected the underlying operations:
+
+- `samplingstrategy:sampled`: On clusters running MongoDB 9.0 or later with sample-based collection in effect, query shape metrics reflect a random sample of read and write operations, so metric values represent only the sampled operations. `samplingrate` is a floating point number indicating the percentage of operations sampled - for example, `0.01` if 1% sampling (the default) is enabled.
+- `samplingstrategy:rate_limited`: On earlier versions, Atlas records up to a maximum number of read queries per second per host (100 per second by default), and write operations are not collected. `samplingrate` is always `0` when the sampling strategy is `rate_limited`.
+
+### Events
+
+MongoDB Atlas can push [alerts][4] to Datadog as events.
+
+### Service Checks
+
+The MongoDB Atlas integration does not include any service checks.
+
+## Troubleshooting
+
+Need help? Contact [MongoDB Support][5]
+
+## Further Reading
+
+Additional helpful documentation, links, and articles:
+
+- [Monitor MongoDB Atlas with Datadog][6]
+- [MongoDB Atlas for Government][7]
+
+[1]: /organization-settings/api-keys
+[2]: https://docs.atlas.mongodb.com/tutorial/monitoring-integrations/#procedure
+[3]: https://github.com/DataDog/integrations-extras/blob/master/mongodb_atlas/metadata.csv
+[4]: https://www.mongodb.com/docs/atlas/configure-alerts/#std-label-notification-options
+[5]: https://support.mongodb.com/
+[6]: https://www.datadoghq.com/blog/monitor-atlas-performance-metrics-with-datadog/
+[7]: https://www.mongodb.com/products/platform/atlas-for-government

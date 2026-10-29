@@ -4,6 +4,8 @@ from datadog_checks.base import OpenMetricsBaseCheckV2
 class FluentBitCheck(OpenMetricsBaseCheckV2):
     __NAMESPACE__ = 'fluentbit'
 
+    DEFAULT_METRIC_LIMIT = 0
+
     def __init__(self, name, init_config, instances):
         super(FluentBitCheck, self).__init__(name, init_config, instances)
         self.check_initializations.appendleft(self._parse_config)
@@ -24,11 +26,13 @@ class FluentBitCheck(OpenMetricsBaseCheckV2):
             'fluentbit_output_retries_failed': 'output.retries_failed',
             'fluentbit_output_retried_records': 'output.retried_records',
             'fluentbit_output_dropped_records': 'output.dropped_records',
+            'fluentbit_build_info': 'build_info',
         }
 
         config = {
             'openmetrics_endpoint': metrics_endpoint,
             'metrics': [metrics_map],
         }
+
         config.update(self.instance)
         self.scraper_configs.append(config)

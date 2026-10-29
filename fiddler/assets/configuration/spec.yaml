@@ -1,0 +1,60 @@
+name: fiddler
+files:
+- name: fiddler.yaml
+  options:
+  - template: init_config
+    options:
+    - template: init_config/default
+  - template: instances
+    options:
+    - name: url
+      required: true
+      description: The Fiddler end point URL
+      value:
+        type: string
+        example: https://example.fiddler.ai
+    - name: fiddler_api_key
+      required: true
+      description: The API key for the Fiddler instance
+      secret: true
+      value:
+        type: string
+        example: <YOUR_API_KEY>
+    - name: organization
+      required: true
+      description: The organization ID for the Fiddler instance
+      value:
+        type: string
+        example: <ORG_ID>
+    - name: bin_size
+      required: false
+      description: The bin size for the Fiddler instance. The options available are 300, 3600, 86400, 604800, and 2592000.
+      value:
+        type: integer
+        example: 3600
+    - name: v1compat
+      required: false
+      description: The v1compat to use old metrics names for the Fiddler instance.
+      value:
+        type: boolean
+        example: true
+        default: false
+    - name: enabled_metrics
+      required: false
+      description: The enabled metric types for the Fiddler instance.
+      value:
+        type: array
+        items:
+          type: string
+        example:
+          - drift
+          - traffic
+          - performance
+        default: ['drift', 'traffic', 'performance', 'statistic', 'service_metrics']
+    - name: delay
+      required: false
+      description: The delay to fetch metrics in seconds for the Fiddler instance.
+      value:
+        type: integer
+        example: 300
+    - template: instances/default

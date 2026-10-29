@@ -1,14 +1,19 @@
-# CHANGELOG - Nomad
+# CHANGELOG - VNS3
 
-1.0.1
-==================
-### Changes
+## 1.0.2
 
-* [FIX] fix the metadata.csv file to match supported `metric_type` names.
+***Added***:
 
+* Example dashboard .json, description of metrics for links, remote support status, interfaces.
 
-1.0.0
-==================
-### Changes
+## 1.0.1
 
-* [FEATURE] Initial VNS3 tile.
+***Fixed***:
+
+* fix the metadata.csv file to match supported `metric_type` names.
+
+## 1.0.0
+
+***Added***:
+
+* Initial VNS3 tile.

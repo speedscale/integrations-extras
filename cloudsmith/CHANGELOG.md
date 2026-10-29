@@ -1,2 +1,59 @@
 # CHANGELOG - Cloudsmith
 
+### Unreleased
+
+### Fixed
+
+* Fixed typos in Overview dashboard widget titles: "Allowence" → "Allowance" and "Licence" → "License" ([#3119](https://github.com/DataDog/integrations-extras/pull/3119))
+
+### 1.4.0 / 2026-06-01
+
+### Added
+
+* Added `billable_only` configuration option (default: `True`) to filter analytics metrics to billable download requests only (download domain, no error responses). When `False`, all results are returned with no filtering applied.
+
+### 1.3.0 / 2026-03-03
+
+### Added
+
+* Org-wide real-time bandwidth monitoring
+* Enhanced bandwidth filtering for more granular analysis
+* Repository-level storage and operational metrics
+* New dashboard widget groups: Org Bandwidth Overview and Repository Overview
+
+### Fixed
+
+* Resolved minor quota conversion discrepancies
+* Improved rate-limit handling to respect Cloudsmith quota headers and reduce unnecessary API calls during 429 responses
+
+### 1.2.0 / 2025-11-03
+
+### Added
+
+* Added real-time bandwidth metric (`cloudsmith.bandwidth_bytes_interval`) and related dashboard widget
+
+### 1.1.1 / 2025-10-17
+
+***Added***
+
+* Upgrade the datadog-checks-base to `37.20.0` [#2829](https://github.com/DataDog/integrations-extras/pull/2829)
+
+### 1.1.0 / 2025-06-20
+
+***Added***:
+
+* Support for metrics on configured quota limits
+* Excluded API token from risk-level emitted events
+* Improved logic to prevent duplicate license policy violation events
+
+### 1.0.0 / 2025-06-06
+
+***Added***:
+
+* Metric support for storage usage, bandwidth usage, token usage, and member activity
+* Event support for security vulnerability scan results, audit logs, policy violations related to vulnerabilities, and license compliance
+
+### 0.0.2 / 2021-09-08
+
+***Added***:
+

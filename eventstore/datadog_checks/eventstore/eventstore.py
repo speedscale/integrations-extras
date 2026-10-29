@@ -16,7 +16,6 @@ from .metrics import ALL_METRICS
 
 
 class EventStoreCheck(AgentCheck):
-
     HTTP_CONFIG_REMAPPER = {
         'ca_bundle': {
             'name': 'tls_ca_cert',
@@ -52,6 +51,7 @@ class EventStoreCheck(AgentCheck):
         tag_by_url = instance.get('tag_by_url', False)
         name_tag = instance.get('name', url)
         metric_def = copy.deepcopy(metrics)
+        self.instance_tags = instance.get('tags', [])
 
         try:
             r = self.http.get(url)
@@ -150,7 +150,7 @@ class EventStoreCheck(AgentCheck):
             es_paths = []
 
         if isinstance(json_obj, list):
-            json_obj = dict((str(k), v) for k, v in enumerate(json_obj))
+            json_obj = {str(k): v for k, v in enumerate(json_obj)}
 
         for key, value in json_obj.items():
             if isinstance(value, (dict, list)):
@@ -219,7 +219,7 @@ class EventStoreCheck(AgentCheck):
         split = metric_path.split('.')
         key = split[index]
         if isinstance(json_obj, list):
-            json_obj = dict((str(k), v) for k, v in enumerate(json_obj))
+            json_obj = {str(k): v for k, v in enumerate(json_obj)}
         try:
             v = json_obj[key]
             if isinstance(v, (dict, list)):
@@ -319,7 +319,7 @@ class EventStoreCheck(AgentCheck):
     def dispatch_metric(self, value, metric):
         """Formats the metric into the correct type with relevant tags"""
         metric_type = metric['metric_type']
-        tags = metric['tag_by']
+        tags = metric['tag_by'] + self.instance_tags
         metric_name = metric['metric_name']
         if metric_type == 'gauge':
             self.log.debug("Sending gauge %s v: %s t: %s", metric_name, value, tags)

@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package='v1alpha1',
     syntax='proto3',
     serialized_options=None,
-    serialized_pb=b'\n\tapi.proto\x12\x08v1alpha1\"\x19\n\x17ListPodResourcesRequest\"I\n\x18ListPodResourcesResponse\x12-\n\rpod_resources\x18\x01 \x03(\x0b\x32\x16.v1alpha1.PodResources\"a\n\x0cPodResources\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tnamespace\x18\x02 \x01(\t\x12\x30\n\ncontainers\x18\x03 \x03(\x0b\x32\x1c.v1alpha1.ContainerResources\"O\n\x12\x43ontainerResources\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x07\x64\x65vices\x18\x02 \x03(\x0b\x32\x1a.v1alpha1.ContainerDevices\"=\n\x10\x43ontainerDevices\x12\x15\n\rresource_name\x18\x01 \x01(\t\x12\x12\n\ndevice_ids\x18\x02 \x03(\t2e\n\x12PodResourcesLister\x12O\n\x04List\x12!.v1alpha1.ListPodResourcesRequest\x1a\".v1alpha1.ListPodResourcesResponse\"\x00\x62\x06proto3',
+    serialized_pb=b'\n\tapi.proto\x12\x08v1alpha1"\x19\n\x17ListPodResourcesRequest"I\n\x18ListPodResourcesResponse\x12-\n\rpod_resources\x18\x01 \x03(\x0b\x32\x16.v1alpha1.PodResources"a\n\x0cPodResources\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tnamespace\x18\x02 \x01(\t\x12\x30\n\ncontainers\x18\x03 \x03(\x0b\x32\x1c.v1alpha1.ContainerResources"O\n\x12\x43ontainerResources\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x07\x64\x65vices\x18\x02 \x03(\x0b\x32\x1a.v1alpha1.ContainerDevices"=\n\x10\x43ontainerDevices\x12\x15\n\rresource_name\x18\x01 \x01(\t\x12\x12\n\ndevice_ids\x18\x02 \x03(\t2e\n\x12PodResourcesLister\x12O\n\x04List\x12!.v1alpha1.ListPodResourcesRequest\x1a".v1alpha1.ListPodResourcesResponse"\x00\x62\x06proto3',
 )
 
 
@@ -284,7 +284,7 @@ ListPodResourcesRequest = _reflection.GeneratedProtocolMessageType(
     (_message.Message,),
     {
         'DESCRIPTOR': _LISTPODRESOURCESREQUEST,
-        '__module__': 'api_pb2'
+        '__module__': 'api_pb2',
         # @@protoc_insertion_point(class_scope:v1alpha1.ListPodResourcesRequest)
     },
 )
@@ -295,7 +295,7 @@ ListPodResourcesResponse = _reflection.GeneratedProtocolMessageType(
     (_message.Message,),
     {
         'DESCRIPTOR': _LISTPODRESOURCESRESPONSE,
-        '__module__': 'api_pb2'
+        '__module__': 'api_pb2',
         # @@protoc_insertion_point(class_scope:v1alpha1.ListPodResourcesResponse)
     },
 )
@@ -306,7 +306,7 @@ PodResources = _reflection.GeneratedProtocolMessageType(
     (_message.Message,),
     {
         'DESCRIPTOR': _PODRESOURCES,
-        '__module__': 'api_pb2'
+        '__module__': 'api_pb2',
         # @@protoc_insertion_point(class_scope:v1alpha1.PodResources)
     },
 )
@@ -317,7 +317,7 @@ ContainerResources = _reflection.GeneratedProtocolMessageType(
     (_message.Message,),
     {
         'DESCRIPTOR': _CONTAINERRESOURCES,
-        '__module__': 'api_pb2'
+        '__module__': 'api_pb2',
         # @@protoc_insertion_point(class_scope:v1alpha1.ContainerResources)
     },
 )
@@ -328,7 +328,7 @@ ContainerDevices = _reflection.GeneratedProtocolMessageType(
     (_message.Message,),
     {
         'DESCRIPTOR': _CONTAINERDEVICES,
-        '__module__': 'api_pb2'
+        '__module__': 'api_pb2',
         # @@protoc_insertion_point(class_scope:v1alpha1.ContainerDevices)
     },
 )
