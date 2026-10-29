@@ -13,31 +13,28 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: '0'
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.8'
+        python-version: '3.11'
 
     - name: Upgrade Python packaging tools
       run: pip install --disable-pip-version-check --upgrade pip setuptools wheel
 
     - name: Install ddev
-      run: pip install "datadog-checks-dev[cli]"
+      run: python -m pip install --build-constraint .github/validation-build-constraints.txt -r requirements-dev.txt
 
     - name: Configure ddev
       run: |
         ddev config set repos.extras .
         ddev config set repo extras
-        ddev config set orgs.ci.dd_url "https://app.datadoghq.com"
-        ddev config set org ci
-        ddev ci setup
 
     - name: Run CI validation
       run: |

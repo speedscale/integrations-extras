@@ -1,1 +1,2 @@
-datadog-checks-dev[cli]
+# Match the fork's legacy manifest and CI schemas.
+datadog-checks-dev[cli]==16.5.2
